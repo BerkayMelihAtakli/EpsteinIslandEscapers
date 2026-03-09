@@ -1,0 +1,6 @@
+background - #f3efe5
+
+text colors {
+    primary - #880404
+    secondary - #0d2818
+}

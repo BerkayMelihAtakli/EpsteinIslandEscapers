@@ -224,24 +224,25 @@ li {
 
 nav ul li a, 
 nav ul li,
-.joinCult{
+.joinCult,
+.pointer{
   cursor: pointer;
 }
 
 .side-menu {
   position: fixed;
-  top: 0;
-  left: -100%;
+  top: 85px;
+  right: -100%;
   width: 80%;
-  height: 100vh;
+  height: calc(100vh - 85px);
   background-color: #f3efe5;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-  transition: left 0.3s ease;
+  transition: right 0.3s ease;
+  box-shadow: -10px 12px 22px -13px #50020262;
   z-index: 1000;
 }
 
 .side-menu.open {
-  left: 0;
+  right: 0;
 }
 
 .burger-menu {
@@ -288,5 +289,12 @@ footer {
   }
   .burger-menu {
     display: flex;
+  }
+}
+
+/* ensure side menu is always hidden on larger screens */
+@media (min-width: 801px) {
+  .side-menu {
+    right: -100% !important;
   }
 }

@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div class="burger-menu">
-            <img src="/EpsteinIslandEscapers/assets/burger-menu.svg" alt="Burger Menu" class="burger-menu-icon" id="burger-menu">
+            <img src="/EpsteinIslandEscapers/assets/burger-menu.svg" alt="Burger Menu" class="burger-menu-icon pointer" id="burger-menu">
         </div>
             <div class="side-menu">
             </div>
