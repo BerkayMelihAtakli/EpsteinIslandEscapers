@@ -1,6 +1,77 @@
-background - #f3efe5
+EPSTEIN ISLAND ESCAPERS — COLOR SHEET (PADRONIZADO)
 
-text colors {
-    primary - #880404
-    secondary - #0d2818
-}
+Fonte de verdade para cores usadas no projeto.
+
+====================
+BASE / NEUTROS
+====================
+--bg-main: #f3efe5
+--bg-main-soft: #f3efe5cc
+--surface-white: #ffffff
+--surface-warm: #efe4d3
+--border-light: #e5e7eb
+
+====================
+TEXTOS
+====================
+--text-primary: #0f2e1b
+--text-secondary: #0d2818
+--text-blood: #880404
+--text-light: #f5f2e9
+--text-shadow-blood: #4d0909
+
+====================
+BLOOD / ACCENTS
+====================
+--blood-strong: #8f1010
+--blood-base: #880404
+--blood-mid: #811507
+--blood-dark: #651111
+--blood-deep: #5c0b0b
+--blood-shadow: #3c0a0a
+--blood-border: #500404
+--blood-outline: #7a1a1a
+--blood-glow-soft: #9a1d1d55
+--blood-line-soft: #ffb7b74f
+--blood-alpha-55: #88040455
+--blood-alpha-88: #88040488
+--blood-alpha-80: #8f101080
+
+====================
+SOMBRAS / OVERLAYS
+====================
+--shadow-black: #000000
+--shadow-panel: #50020272
+--shadow-overlay: #0000002a
+--overlay-modal: rgba(0, 0, 0, 0.5)
+
+====================
+OUTROS (NÃO-TEMA BLOOD)
+====================
+--blue-hover-legacy: #2980b9
+
+====================
+SVG NAV (OLHO)
+====================
+--eye-outline-blood: #880404
+--eye-sclera: #f5f2e9
+--eye-pupil: #0d2818
+
+====================
+ESTILOS ARQUIVADOS (REFERÊNCIA)
+====================
+# B style "Blood Capsule"
+# - base: #5b0202
+# - border: #e8c7c7
+
+# C style "Ritual Shard"
+# - base: #320000
+# - border: #d7b3b3
+
+# A original style
+# - base: #7a0202
+# - border: #f1d3d3
+
+# B latest "Shard Fang"
+# - base: #3a0000
+# - border: #e2c0c0
