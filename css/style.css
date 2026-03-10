@@ -95,6 +95,64 @@ button {
   height: 100vh;
 }
 
+.secondSection {
+  width: 100%;
+  min-height: 75vh;
+  padding: 108px 0 48px;
+  background: linear-gradient(180deg, #efe4d3 0%, #f3efe5 46%, #ebe0ce 100%);
+  border-top: 1px solid #8f101040;
+}
+
+.secondSectionContainer {
+  width: min(100%, 1220px);
+  margin: 0 auto;
+  padding: 0 clamp(14px, 2.2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.secondInfoTitle {
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: clamp(30px, 6vw, 52px);
+  color: #880404;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.secondInfoText {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(16px, 1.8vw, 21px);
+  line-height: 1.4;
+  color: #0f2e1b;
+  text-align: left;
+  max-width: 1120px;
+}
+
+.secondInfoImage {
+  width: 100%;
+  height: clamp(200px, 40vh, 430px);
+  object-fit: cover;
+  display: block;
+  margin: 4px 0;
+  border: 1px solid #0f2e1b33;
+  border-radius: 14px;
+  box-shadow: 0 16px 34px -26px #0f2e1b;
+}
+
+.secondInfoTextLong {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.55;
+  color: #0f2e1b;
+  text-align: left;
+  max-width: 1140px;
+  padding-top: 14px;
+  border-top: 1px solid #8f101055;
+}
+
 /* Nav Bar */
 
 nav {
@@ -179,18 +237,66 @@ nav {
 }
 
 .navNormalLink {
-  font-size: 18px;
+  font-size: 20px;
   font-family: ShareTech, Arial, Helvetica, sans-serif;
-  transition: 0.2s ease;
+  display: inline-block;
+  padding: 6px 10px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 .navNormalLink:hover {
-  transform: scale(0.95);
+  transform: translateY(-1px);
+  animation: navLinkRedBlack 1s ease-in-out infinite;
+  background: linear-gradient(to top, #88040414 0%, transparent 60%);
+}
+
+@keyframes navLinkRedBlack {
+  0%,
+  100% {
+    color: #880404;
+    text-shadow: 0 0 7px #88040433;
+    box-shadow: inset 0 -2px 0 #880404;
+  }
+
+  50% {
+    color: #000000;
+    text-shadow: 0 0 7px #0000002d;
+    box-shadow: inset 0 -2px 0 #000000;
+  }
 }
 
 .joinCult {
   font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
   font-size: 26px;
+  --cult-text-color: #000000;
+  color: var(--cult-text-color);
+  position: relative;
+  display: inline-block;
+  transition:
+    color 0.55s ease,
+    text-shadow 0.55s ease;
+}
+
+.joinCult::after {
+  content: "⛧☽☿✶☽⛧☿✶☽⛧☿✶";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  color: var(--cult-text-color);
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-shadow: inherit;
+  pointer-events: none;
+  width: 0;
+  overflow: hidden;
+  transition:
+    width 0.8s steps(12, end),
+    opacity 0.45s ease;
 }
 
 .joinCultDesign {
@@ -209,6 +315,19 @@ nav {
 .joinCultDesign:hover {
   transform: translate(3px, 3px);
   box-shadow: 0px 0px 0px 0px #8f1010;
+}
+
+.joinCultDesign:hover .joinCult {
+  color: transparent;
+  text-shadow: none;
+}
+
+.joinCultDesign:hover .joinCult::after {
+  opacity: 1;
+  width: 100%;
+  transition:
+    width 0.42s steps(12, end),
+    opacity 0.2s ease;
 }
 
 .cult-btn {
@@ -546,6 +665,29 @@ footer {
   .burger-menu {
     display: flex;
   }
+
+  .secondSection {
+    padding: 88px 0 30px;
+  }
+
+  .secondSectionContainer {
+    width: min(100%, 760px);
+    padding: 0 14px;
+    gap: 10px;
+  }
+
+  .secondInfoTitle {
+    font-size: clamp(28px, 7vw, 38px);
+  }
+
+  .secondInfoText,
+  .secondInfoTextLong {
+    font-size: 16px;
+  }
+
+  .secondInfoImage {
+    height: clamp(175px, 34vh, 280px);
+  }
 }
 
 @media (max-width: 420px) {
@@ -565,6 +707,14 @@ footer {
   .cult-btn {
     font-size: 20px;
     min-height: 58px;
+  }
+
+  .secondInfoTitle {
+    font-size: 28px;
+  }
+
+  .secondInfoImage {
+    height: clamp(155px, 30vh, 230px);
   }
 }
 
