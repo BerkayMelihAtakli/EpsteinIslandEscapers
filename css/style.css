@@ -381,7 +381,7 @@ nav {
 
 .sideInfoImage {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: clamp(170px, 32vh, 270px);
   object-fit: cover;
   display: block;
   margin: 4px 0;
@@ -590,7 +590,7 @@ footer {
   }
 
   .sideInfoImage {
-    max-height: 110px;
+    height: clamp(130px, 24vh, 190px);
   }
 
   .sideInfoTextLong {
