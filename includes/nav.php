@@ -26,36 +26,40 @@
                 <li><a href="#" class="navNormalLink">Reviews</a></li>
                 <li>
                     <div class="joinCultDesign">
-                        <a href="#" class="joinCult">Join the Cult</a> 
+                        <a href="#" class="joinCult">Join the Cult</a>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="burger-menu">
-            <img src="/EpsteinIslandEscapers/assets/burger-menu.svg" alt="Burger Menu" class="burger-menu-icon pointer" id="burger-menu">
+            <img src="/EpsteinIslandEscapers/assets/burger-menu.svg" alt="Burger Menu" class="burger-menu-icon pointer"
+                id="burger-menu">
         </div>
-            <div class="side-menu">
-                <ul class="side-ul">
+        <div class="side-menu">
+            <ul class="side-ul">
                 <li class="b-li">
                     <div class="sideNavDesign">
-                        <a href="#" class="sideNavLink">Home</a> 
+                        <a href="#" class="sideNavLink">Home</a>
                     </div>
                 </li>
                 <li class="b-li">
                     <div class="sideNavDesign">
-                        <a href="#" class="sideNavLink">Reviews</a> 
+                        <a href="#" class="sideNavLink">Reviews</a>
                     </div>
                 </li>
                 <li class="sideInfoItem">
                     <h2 class="sideInfoTitle">Forgotten Whispers</h2>
                     <p class="sideInfoText">A quiet village hides old secrets and strange lights beyond the shore.</p>
-                    <img src="/EpsteinIslandEscapers/assets/Misty island in a foggy sea.png" alt="Misty island in a foggy sea" class="sideInfoImage">
-                    <p class="sideInfoTextLong">Fog rolls over silent docks while distant bells echo through the night, and every narrow path leads wanderers toward forgotten ruins, hidden symbols, and unanswered names.</p>
+                    <img src="/EpsteinIslandEscapers/assets/Misty island in a foggy sea.png"
+                        alt="Misty island in a foggy sea" class="sideInfoImage">
+                    <p class="sideInfoTextLong">Fog rolls over silent docks while distant bells echo through the night,
+                        and every narrow path leads wanderers toward forgotten ruins, hidden symbols, and unanswered
+                        names.</p>
                 </li>
                 <li class="b-li last-li">
                     <a href="#" class="cult-btn cult-btn-a">Join the Cult</a>
                 </li>
             </ul>
-            </div>
+        </div>
     </div>
 </nav>
