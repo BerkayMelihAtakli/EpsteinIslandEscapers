@@ -1,4 +1,8 @@
-CREATE TABLE riddles (
+DROP TABLE IF EXISTS riddles;
+DROP TABLE IF EXISTS question;
+
+
+CREATE TABLE question (
     id INT AUTO_INCREMENT PRIMARY KEY,
     riddle VARCHAR(255) NOT NULL,
     answer VARCHAR(100) NOT NULL,
@@ -16,7 +20,7 @@ INSERT INTO question (riddle, hint, answer, roomId) VALUES
 -- Kamer 2 
 ('Ik ben licht als een veer, maar zelfs de sterkste man kan mij niet lang vasthouden. Wat ben ik?', 'Je doet het nu terwijl je leest.', 'adem', 2),
 ('Wat heeft sleutels maar kan geen sloten openen?', 'Het staat vaak in een woonkamer of muziekschool.', 'piano', 2),
-('Wat wordt natter naarmate het meer droogt?', 'Je gebruikt dit na het douchen.', 'handdoek', 2);
+('Wat wordt natter naarmate het meer droogt?', 'Je gebruikt dit na het douchen.', 'handdoek', 2),
 
 -- Kamer 3
 ('Wat heeft een gezicht en twee handen, maar geen armen of benen?', 'Het tikt...', 'klok', 3),
