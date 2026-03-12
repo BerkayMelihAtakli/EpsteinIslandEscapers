@@ -15,6 +15,9 @@ include 'includes/nav.php';
             narrow path leads wanderers toward forgotten ruins, hidden symbols, and unanswered names.</p>
     </div>
 </section>
+<section class="joinSection">
+
+</section>
 
 
 <?php include 'includes/footer.php'; ?>

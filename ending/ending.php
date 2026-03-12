@@ -19,8 +19,5 @@
         <button class="home-button">Home</button>
          <link rel="stylesheet" href="includes/nav.css">
      </a>
-   
-  
-    
 </body>
 </html>
