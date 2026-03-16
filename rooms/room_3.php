@@ -1,4 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+if (empty($_SESSION['cult_unlocked'])) {
+  header('Location: /EpsteinIslandEscapers/index.php#cult-riddle');
+  exit;
+}
+
 require_once('../dbcon.php');
 
 try {

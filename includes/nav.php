@@ -26,7 +26,7 @@
                 <li><a href="#" class="navNormalLink">Reviews</a></li>
                 <li>
                     <div class="joinCultDesign">
-                        <a href="#" class="joinCult">Join the Cult</a>
+                        <a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="joinCult">Join the Cult</a>
                     </div>
                 </li>
             </ul>
@@ -57,7 +57,7 @@
                         names.</p>
                 </li>
                 <li class="b-li last-li">
-                    <a href="#" class="cult-btn cult-btn-a">Join the Cult</a>
+                    <a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="cult-btn cult-btn-a">Join the Cult</a>
                 </li>
             </ul>
         </div>
