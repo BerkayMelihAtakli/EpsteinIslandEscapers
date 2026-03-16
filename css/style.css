@@ -33,6 +33,38 @@ body {
   overflow-x: hidden;
 }
 
+/* Bloody Scrollbar */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7a1a1a #efe4d3;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #efe4d3 0%, #e7dbc8 100%);
+  box-shadow: inset 0 0 0 1px #8f101022;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #9a1d1d 0%, #5c0b0b 100%);
+  border: 2px solid #f3efe5;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px #dcbcbc66;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #b11f1f 0%, #6e0d0d 100%);
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: #e7dbc8;
+}
+
 a {
   color: black;
   text-decoration: none;
@@ -153,17 +185,360 @@ button {
   border-top: 1px solid #8f101055;
 }
 
+.joinSection {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(88px, 11vh, 126px) 0 clamp(64px, 8vh, 96px);
+  scroll-margin-top: 85px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-top: 1px solid #1d0606;
+  border-bottom: 1px solid #1d0606;
+  background:
+    radial-gradient(circle at 14% 24%, #d0181850 0%, transparent 42%),
+    radial-gradient(circle at 86% 72%, #7a1a1a48 0%, transparent 44%),
+    radial-gradient(circle at 50% 52%, #4f0a0a25 0%, transparent 58%),
+    linear-gradient(180deg, #050101 0%, #020000 58%, #070101 100%);
+  overflow: hidden;
+}
+
+.joinSection::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    #8f10100f 0deg,
+    transparent 76deg,
+    #f2d9b008 126deg,
+    transparent 196deg,
+    #8f10100d 252deg,
+    transparent 360deg
+  );
+  filter: blur(16px);
+  animation: joinFogDrift 34s linear infinite;
+}
+
+.joinSection::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 30%, #000000af 100%),
+    repeating-linear-gradient(
+      0deg,
+      #ffffff04 0,
+      #ffffff04 1px,
+      transparent 1px,
+      transparent 14px
+    );
+}
+
+.joinSectionContainer {
+  width: min(100%, 1220px);
+  margin: 0 auto;
+  padding: 0 clamp(14px, 2.2vw, 24px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+  position: relative;
+  z-index: 2;
+}
+
+.captureFrame {
+  border: none;
+  padding: clamp(12px, 2.2vw, 22px) clamp(18px, 2.5vw, 30px) clamp(12px, 1.8vw, 18px) 0;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+  position: relative;
+  overflow: visible;
+  text-align: left;
+  border-right: 1px solid #b11f1f66;
+}
+
+.captureFrame::before {
+  content: "\26E7 \2721 \2620 \2721 \26E7 \00a0\00a0 ABDUCTION REPORT";
+  position: absolute;
+  left: 0;
+  top: -8px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  color: #f2d9b08f;
+}
+
+.captureFrame::after {
+  content: none;
+}
+
+.captureLabel {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: 1.9px;
+  text-transform: uppercase;
+  color: #f0c3a8;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.captureTitle {
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: clamp(34px, 5.8vw, 74px);
+  letter-spacing: 1.1px;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: #ffe4d1;
+  text-shadow:
+    0 0 22px #b11f1f8a,
+    0 0 1px #ffe4d1;
+  max-width: 13ch;
+}
+
+.captureText {
+  margin-top: 14px;
+  margin-bottom: 18px;
+  max-width: 68ch;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(15px, 1.35vw, 18px);
+  line-height: 1.6;
+  color: #f0d2bf;
+  padding: 14px 16px;
+  border-left: 2px solid #c92020;
+  background: linear-gradient(90deg, #5a09093b 0%, transparent 80%);
+}
+
+.captureChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.captureChips span {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(11px, 0.95vw, 13px);
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #f2d9c8;
+  border: 1px solid #b11f1f80;
+  background-color: #250808cf;
+  border-radius: 999px;
+  padding: 6px 11px;
+}
+
+
+.joinRiddleCard {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+  padding: clamp(14px, 2vw, 18px) 0 0 clamp(6px, 1.2vw, 14px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: auto;
+  position: relative;
+  overflow: visible;
+}
+
+.joinRiddleCard::before {
+  content: "\26E7 \2720 \2620 \2721 \26A1 \2721 \2620 \2720 \26E7";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #f2d9b08f;
+  white-space: normal;
+}
+
+.joinRiddleCard::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 18px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #b11f1f88 0%, transparent 100%);
+}
+
+.riddleEyebrow {
+  margin-top: 18px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #f0c3a8;
+}
+
+.riddleTitle {
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 0.96;
+  letter-spacing: 1px;
+  color: #ffe4d1;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.riddleRule {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffd7c0;
+}
+
+.riddlePrompt {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.55;
+  color: #f0d2bf;
+  border-left: 2px solid #c92020;
+  padding: 10px 12px;
+  background: linear-gradient(90deg, #5a09093b 0%, transparent 80%);
+}
+
+.riddleLabel {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  color: #f2d9c8;
+  text-transform: uppercase;
+}
+
+.riddleInput {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #b11f1f8a;
+  background-color: #1a0505;
+  color: #ffe8d6;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.riddleInput:focus {
+  border-color: #ffe4d1a8;
+  box-shadow: 0 0 0 2px #b11f1f45;
+}
+
+.riddleSubmit {
+  min-height: 46px;
+  width: min(100%, 230px);
+  padding: 0 16px;
+  border: 1px solid #8e4c4c;
+  background-color: #2a0707;
+  color: #efdccc;
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.riddleSubmit:hover {
+  background-color: #1b0505;
+  transform: translateY(1px);
+}
+
+.riddleFeedback {
+  min-height: 22px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #f0c3a8;
+}
+
+.gateWhisper {
+  font-family: CormorantItalic, "Times New Roman", serif;
+  font-size: clamp(22px, 2.1vw, 30px);
+  line-height: 1.08;
+  color: #ffe0cd;
+  text-shadow: 0 0 16px #d01818a8;
+  max-width: 18ch;
+  text-align: center;
+}
+
+.joinEntryButton {
+  min-height: 58px;
+  width: min(100%, 280px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 800;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  color: #efdccc;
+  background-color: #2a0707;
+  border: 1px solid #8e4c4c;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px #f2d9b01f,
+    0 4px 0 #150303,
+    0 10px 18px -14px #000000;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    letter-spacing 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.joinEntryButton:hover {
+  transform: translateY(1px);
+  background-color: #1b0505;
+  border-color: #6a2121;
+  box-shadow:
+    inset 0 0 0 1px #f2d9b014,
+    0 1px 0 #170202,
+    0 6px 12px -12px #000000;
+  letter-spacing: 1.4px;
+  color: #e8d4c4;
+}
+
+.joinEntryButton:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 0 0 1px #f2d9b00f,
+    0 0 0 #170202;
+}
+
+@keyframes joinFogDrift {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(360deg) scale(1.06);
+  }
+}
+
 /* Nav Bar */
 
 nav {
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(8px) saturate(120%);
   width: 100%;
   height: 85px;
-  border-bottom: #e5e7eb solid 5px;
-  -webkit-box-shadow: 2px -11px 50px -1px #000000;
-  box-shadow: 2px -11px 50px -1px #000000;
+  background: linear-gradient(180deg, #1b1010f2 0%, #0f0909ea 100%);
+  border-bottom: 1px solid #7a1a1a;
+  -webkit-box-shadow: 0 14px 28px -20px #000000;
+  box-shadow: 0 14px 28px -20px #000000;
   position: fixed;
   top: 0;
+  z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,8 +557,8 @@ nav {
   font-family: "Cinzel", "Times New Roman", serif;
   font-size: 30px;
   letter-spacing: 6px;
-  color: #0f2e1b;
-  text-shadow: 2px 2px 0 #880404;
+  color: #f3e8d7;
+  text-shadow: 1px 1px 0 #690d0d;
   white-space: nowrap;
 }
 
@@ -239,6 +614,7 @@ nav {
 .navNormalLink {
   font-size: 20px;
   font-family: ShareTech, Arial, Helvetica, sans-serif;
+  color: #e8daca;
   display: inline-block;
   padding: 6px 10px;
   transition:
@@ -250,28 +626,28 @@ nav {
 .navNormalLink:hover {
   transform: translateY(-1px);
   animation: navLinkRedBlack 1s ease-in-out infinite;
-  background: linear-gradient(to top, #88040414 0%, transparent 60%);
+  background: linear-gradient(to top, #b21f1f24 0%, transparent 60%);
 }
 
 @keyframes navLinkRedBlack {
   0%,
   100% {
-    color: #880404;
-    text-shadow: 0 0 7px #88040433;
+    color: #c86f6f;
+    text-shadow: 0 0 7px #8804044a;
     box-shadow: inset 0 -2px 0 #880404;
   }
 
   50% {
-    color: #000000;
-    text-shadow: 0 0 7px #0000002d;
-    box-shadow: inset 0 -2px 0 #000000;
+    color: #f3e8d7;
+    text-shadow: 0 0 7px #f3e8d726;
+    box-shadow: inset 0 -2px 0 #f3e8d7;
   }
 }
 
 .joinCult {
   font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
   font-size: 26px;
-  --cult-text-color: #000000;
+  --cult-text-color: #eadbc9;
   color: var(--cult-text-color);
   position: relative;
   display: inline-block;
@@ -306,15 +682,16 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 3px 3px 0px 0px #8f1010;
-  border: #ffffff solid 2px;
+  box-shadow: 2px 2px 0 0 #6b1212;
+  border: #b18d8d solid 1px;
+  background: linear-gradient(180deg, #2b0c0c 0%, #170707 100%);
   transition: 0.2s ease;
   cursor: pointer;
 }
 
 .joinCultDesign:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 0px 0px 0px 0px #8f1010;
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 #6b1212;
 }
 
 .joinCultDesign:hover .joinCult {
@@ -571,6 +948,11 @@ nav {
   min-width: 0;
 }
 
+.scroller {
+  scrollbar-width: thin;
+}
+
+
 nav ul li a,
 nav ul li,
 .joinCult,
@@ -633,10 +1015,16 @@ footer {
 @media (max-width: 800px) {
   nav {
     height: 72px;
+    background: #F0E6D7;
+    border-bottom: 1px solid #8f101060;
+    -webkit-box-shadow: 0 10px 24px -18px #0000008a;
+    box-shadow: 0 10px 24px -18px #0000008a;
   }
   .title-text {
     font-size: clamp(18px, 5vw, 25px);
     letter-spacing: clamp(1px, 0.8vw, 4px);
+    color: #0f2e1b;
+    text-shadow: 1px 1px 0 #880404;
   }
   .navContainer {
     width: 100%;
@@ -668,6 +1056,7 @@ footer {
 
   .secondSection {
     padding: 88px 0 30px;
+
   }
 
   .secondSectionContainer {
@@ -687,6 +1076,59 @@ footer {
 
   .secondInfoImage {
     height: clamp(175px, 34vh, 280px);
+  }
+
+  .joinSection {
+    min-height: calc(100dvh - 72px);
+    scroll-margin-top: 72px;
+    padding: 34px 0 42px;
+  }
+
+  .joinSectionContainer {
+    width: min(100%, 760px);
+    padding: 0 14px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .captureFrame,
+  .joinRiddleCard {
+    clip-path: none;
+    border: none;
+  }
+
+  .captureFrame {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .joinRiddleCard {
+    padding-left: 0;
+  }
+
+  .captureTitle {
+    font-size: clamp(30px, 10vw, 50px);
+    max-width: 100%;
+  }
+
+  .captureText {
+    font-size: 15px;
+    line-height: 1.55;
+    padding: 12px 12px;
+  }
+
+  .riddleTitle {
+    font-size: clamp(26px, 7.2vw, 34px);
+  }
+
+  .riddlePrompt {
+    font-size: 15px;
+  }
+
+  .joinEntryButton {
+    width: min(100%, 320px);
+    min-height: 56px;
+    letter-spacing: 1.1px;
   }
 }
 
@@ -715,6 +1157,59 @@ footer {
 
   .secondInfoImage {
     height: clamp(155px, 30vh, 230px);
+  }
+
+  .captureFrame,
+  .joinRiddleCard {
+    padding: 12px;
+    clip-path: none;
+  }
+
+  .captureFrame,
+  .joinRiddleCard {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .captureLabel {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+  }
+
+  .captureTitle {
+    font-size: clamp(27px, 10vw, 36px);
+  }
+
+  .captureText {
+    font-size: 14px;
+  }
+
+  .captureChips {
+    gap: 7px;
+  }
+
+  .captureChips span {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+
+  .riddleTitle {
+    font-size: clamp(24px, 8.2vw, 30px);
+  }
+
+  .riddlePrompt {
+    font-size: 14px;
+  }
+
+  .riddleSubmit {
+    width: 100%;
+  }
+
+  .joinEntryButton {
+    width: 100%;
+    min-height: 54px;
+    font-size: clamp(19px, 7vw, 22px);
+    letter-spacing: 1.1px;
   }
 }
 
