@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Room 1 - Escape Room</title>
+
+<style>
+/* GENERAL */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #050101 0%, #020000 60%, #070101 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* MAIN */
+.escape-room {
+  text-align: center;
+}
+
+.room-title {
+  font-size: 48px;
+  color: #ffe4d1;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #b11f1f;
+}
+
+/* CARD */
+.riddle-card {
+  background: #1a0505;
+  border: 1px solid #8f1010;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 10px 30px #000;
+}
+
+/* TEXT */
+#riddleText {
+  color: #f0d2bf;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+#progress {
+  margin-top: 10px;
+  color: #c9a8a8;
+}
+
+/* INPUT */
+#answerInput {
+  width: 100%;
+  padding: 10px;
+  background: #000;
+  border: 1px solid #b11f1f;
+  color: #fff;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+/* BUTTON */
+button {
+  background: #5c0b0b;
+  border: 1px solid #dcbcbc;
+  color: #fff;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  background: #7a1a1a;
+}
+
+/* FEEDBACK */
+#feedback {
+  margin-top: 10px;
+  color: #ffb3b3;
+}
+
+#hintText {
+  margin-top: 10px;
+  color: #f2d9b0;
+  font-size: 14px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="escape-room">
+  <h1 class="room-title">Room 1</h1>
+
+  <div class="riddle-card">
+    <p id="riddleText"></p>
+
+    <input type="text" id="answerInput" placeholder="Type your answer..." />
+    <br>
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="showHint()">Hint</button>
+
+    <p id="feedback"></p>
+    <p id="hintText"></p>
+    <p id="progress"></p>
+  </div>
+</div>
+
+<script>
+const riddles = [
+  {
+    question: "I have cities, but no houses. I have mountains, but no trees. What am I?",
+    answer: "map",
+    hint: "Look at the paper on the wall."
+  },
+  {
+    question: "The more of me there is, the less you see. What am I?",
+    answer: "darkness",
+    hint: "Try turning off the lights."
+  },
+  {
+    question: "I always run, but never walk. I have a mouth, but never talk. What am I?",
+    answer: "river",
+    hint: "Think of flowing water."
+  }
+];
+
+let current = 0;
+
+function loadRiddle() {
+  document.getElementById("riddleText").innerText = riddles[current].question;
+  document.getElementById("progress").innerText = `Riddle ${current + 1} / ${riddles.length}`;
+  document.getElementById("answerInput").value = "";
+  document.getElementById("feedback").innerText = "";
+  document.getElementById("hintText").innerText = "";
+}
+
+function checkAnswer() {
+  const input = document.getElementById("answerInput").value.toLowerCase().trim();
+
+  if (input === riddles[current].answer) {
+    document.getElementById("feedback").innerText = "✔ Correct!";
+    current++;
+
+    if (current < riddles.length) {
+      setTimeout(loadRiddle, 800);
+    } else {
+      document.querySelector(".riddle-card").innerHTML =
+        "<h2 style='color:#ffe4d1'>Door Unlocked 🔓</h2>";
+    }
+  } else {
+    document.getElementById("feedback").innerText = "✖ Wrong answer";
+  }
+}
+
+function showHint() {
+  document.getElementById("hintText").innerText = riddles[current].hint;
+}
+
+loadRiddle();
+</script>
+
+</body>
+</html>
