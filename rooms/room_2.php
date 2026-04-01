@@ -8,7 +8,6 @@ if (empty($_SESSION['cult_unlocked'])) {
 
 require_once('../dbcon.php');
 
-// riddles from database
 try {
     $stmt = $db_connection->query("SELECT * FROM question WHERE roomId = 2");
     $riddles = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -16,7 +15,7 @@ try {
     die("Databasefout: " . $e->getMessage());
 }
 
-// current index
+
 if (!isset($_SESSION['current'])) {
     $_SESSION['current'] = 0;
 }
@@ -25,7 +24,7 @@ $current = $_SESSION['current'];
 $feedback = "";
 $hintText = "";
 
-// answer check
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['answer'])) {
