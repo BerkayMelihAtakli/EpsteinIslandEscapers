@@ -10,13 +10,13 @@
 
 /* `epsteinislandescapers`.`question` */
 $question = array(
-  array('id' => '1','riddle' => 'Ik heb steden, maar geen huizen. Ik heb bergen, maar geen bomen. Wat ben ik?','answer' => 'kaart','hint' => 'Kijk eens op de muur naar die papieren kaart.','roomId' => '1'),
-  array('id' => '2','riddle' => 'Hoe meer er van mij is, hoe minder je ziet. Wat ben ik?','answer' => 'duisternis','hint' => 'Doe het licht maar eens uit.','roomId' => '1'),
-  array('id' => '3','riddle' => 'Ik loop altijd, maar heb geen benen. Ik heb een mond, maar spreek nooit. Wat ben ik?','answer' => 'rivier','hint' => 'Denk aan kabbelend water.','roomId' => '1'),
-  array('id' => '4','riddle' => 'Ik ben licht als een veer, maar zelfs de sterkste man kan mij niet lang vasthouden. Wat ben ik?','answer' => 'adem','hint' => 'Je doet het nu terwijl je leest.','roomId' => '2'),
-  array('id' => '5','riddle' => 'Wat heeft sleutels maar kan geen sloten openen?','answer' => 'piano','hint' => 'Het staat vaak in een woonkamer of muziekschool.','roomId' => '2'),
-  array('id' => '6','riddle' => 'Wat wordt natter naarmate het meer droogt?','answer' => 'handdoek','hint' => 'Je gebruikt dit na het douchen.','roomId' => '2'),
-  array('id' => '7','riddle' => 'Wat heeft een gezicht en twee handen, maar geen armen of benen?','answer' => 'klok','hint' => 'Het tikt...','roomId' => '3'),
-  array('id' => '8','riddle' => 'Ik heb gaten aan de bovenkant en de onderkant, aan de linkerkant en de rechterkant, en toch houd ik water vast. Wat ben ik?','answer' => 'spons','hint' => 'Je vindt me in de keuken.','roomId' => '3'),
-  array('id' => '9','riddle' => 'Wat is van jou, maar wordt door anderen veel vaker gebruikt dan door jezelf?','answer' => 'naam','hint' => 'Het staat op je paspoort.','roomId' => '3')
+  array('id' => '1','riddle' => 'I have cities, but no houses. I have mountains, but no trees. What am I?','answer' => 'map','hint' => 'Take a look at the paper map on the wall.','roomId' => '1'),
+  array('id' => '2','riddle' => 'The more of me there is, the less you see. What am I?','answer' => 'darkness','hint' => 'Try turning off the lights.','roomId' => '1'),
+  array('id' => '3','riddle' => 'I always run, but have no legs. I have a mouth, but never speak. What am I?','answer' => 'river','hint' => 'Think of flowing water.','roomId' => '1'),
+  array('id' => '4','riddle' => 'I am light as a feather, yet even the strongest man cannot hold me for long. What am I?','answer' => 'breath','hint' => 'You are doing it right now while reading.','roomId' => '2'),
+  array('id' => '5','riddle' => 'What has keys but cannot open locks?','answer' => 'piano','hint' => 'You often find it in a living room or music school.','roomId' => '2'),
+  array('id' => '6','riddle' => 'What gets wetter the more it dries?','answer' => 'towel','hint' => 'You use it after showering.','roomId' => '2'),
+  array('id' => '7','riddle' => 'What has a face and two hands, but no arms or legs?','answer' => 'clock','hint' => 'It ticks...','roomId' => '3'),
+  array('id' => '8','riddle' => 'I have holes on the top and bottom, left and right, yet I still hold water. What am I?','answer' => 'sponge','hint' => 'You can find me in the kitchen.','roomId' => '3'),
+  array('id' => '9','riddle' => 'What belongs to you, but is used by others more than yourself?','answer' => 'name','hint' => 'It is on your passport.','roomId' => '3')
 );
