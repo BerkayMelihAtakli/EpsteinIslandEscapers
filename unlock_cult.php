@@ -36,7 +36,13 @@ $attempt = strtolower($attempt);
 $attempt = preg_replace('/[^a-z0-9\s]/', '', $attempt) ?? '';
 $attempt = trim(preg_replace('/\s+/', ' ', $attempt) ?? '');
 
-$acceptedAnswers = ['sigil', 'seal', 'mark'];
+$acceptedAnswers = [
+    'storm',
+    'tempest',
+    'thunderstorm',
+    'squall',
+    'gale'
+];
 
 if (in_array($attempt, $acceptedAnswers, true)) {
     $_SESSION['cult_unlocked'] = true;

@@ -135,7 +135,11 @@
           riddleCard.dataset.unlocked = '1';
           feedback.textContent = payload.message || 'The lock yields. You may enter the ritual.';
           feedback.style.color = '#b8f5c6';
-          submit.textContent = unlockedSubmitText;
+          submit.textContent = 'Entering...';
+          submit.disabled = true;
+          window.setTimeout(function () {
+            window.location.href = joinUrl;
+          }, 450);
           return;
         }
 
