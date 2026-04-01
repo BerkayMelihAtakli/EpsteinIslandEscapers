@@ -1,0 +1,21 @@
+Room 1 Answers (Admin Only)
+
+Stage 1 - Omen Vision
+Answer: reality starts to bleed
+How: Caesar-style shift cipher from the visual signal (4-step counter shift).
+
+Stage 2 - Sigil Disarm
+Ritual pulse sequence (rune names):
+1) b4
+2) b1
+3) b7
+4) b2
+5) b9
+6) b3
+7) b8
+8) b5
+9) b6
+
+Stage 3 - Final Seal
+Answer: 45138
+How: Morse clue is hidden in the page visuals.

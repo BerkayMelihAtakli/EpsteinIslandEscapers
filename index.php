@@ -9,7 +9,12 @@ include 'includes/header.php';
 include 'includes/nav.php';
 ?>
 <section class="firstSection">
-
+    <div class="firstSectionContainer">
+        <p class="firstSectionEyebrow">TCR Schiedam School Project</p>
+        <h1 class="firstSectionTitle">Welcome to Epstein Island Escapers</h1>
+        <p class="firstSectionText">This game is a school project made at TCR Schiedam. Everything in this story is fictional.</p>
+        <p class="firstSectionText">Have fun, solve the riddles, and enjoy the adventure. Work with your team and try to escape the island.</p>
+    </div>
 </section>
 <section class="secondSection">
     <div class="secondSectionContainer">
@@ -40,7 +45,7 @@ include 'includes/nav.php';
             <p class="riddleEyebrow">Ritual Lock</p>
             <h3 class="riddleTitle">One answer opens the gate.</h3>
             <p class="riddleRule">Answer the riddle correctly to unlock entry to the cult.</p>
-            <p class="riddlePrompt">I am carved, not alive. I carry power, not blood. Psychopaths kneel when I appear. What am I?</p>
+            <p class="riddlePrompt">I have no face, yet I scream through iron halls at midnight. Torches die when I breathe, and the sea kneels under my rage. What am I?</p>
             <label for="riddleInput" class="riddleLabel">Your answer</label>
             <input id="riddleInput" class="riddleInput" type="text" autocomplete="off" spellcheck="false" placeholder="Type one word...">
             <button type="button" class="riddleSubmit">Unlock</button>
