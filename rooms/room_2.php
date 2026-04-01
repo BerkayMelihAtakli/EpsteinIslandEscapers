@@ -184,7 +184,8 @@ button:hover {
 
     <?php else: ?>
 
-      <h2 style="color:#ffe4d1">Door Unlocked 🔓</h2>
+      <h2 style="color:#ffe4d1">You can go to Room 3</h2>
+      <a href="room_3.php"><button style="background: #5c0b0b; border: 1px solid #dcbcbc; color: #fff; padding: 10px 20px; cursor: pointer; margin-top: 20px;">Enter Room 3</button></a>
       <?php unset($_SESSION['room2_current']); ?>
 
     <?php endif; ?>
