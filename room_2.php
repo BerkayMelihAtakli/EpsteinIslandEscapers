@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Room 1 - Escape Room</title>
+<title>Room 2 - Escape Room</title>
 
 <style>
 body {
@@ -143,7 +143,7 @@ button:hover {
 <body>
 
 <div class="escape-room">
-  <h1 class="room-title">Room 1</h1>
+  <h1 class="room-title">Room 2</h1>
 
   <div class="riddle-card">
 
