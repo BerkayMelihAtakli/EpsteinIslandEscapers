@@ -6,21 +6,39 @@ if (empty($_SESSION['cult_unlocked'])) {
   exit;
 }
 
-require_once('../dbcon.php');
+require_once('../admin/question.php');
 
-try {
-    $stmt = $db_connection->query("SELECT * FROM question WHERE roomId = 2");
-    $riddles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Databasefout: " . $e->getMessage());
+$riddles = [];
+if (isset($question) && is_array($question)) {
+  $riddles = array_values(
+    array_filter($question, function ($item) {
+      return isset($item['roomId']) && (string)$item['roomId'] === '2';
+    })
+  );
+}
+
+if (count($riddles) === 0) {
+  die('No riddles found for Room 2 in admin/question.php');
 }
 
 
-if (!isset($_SESSION['current'])) {
-    $_SESSION['current'] = 0;
+if (!isset($_SESSION['room2_current'])) {
+  $_SESSION['room2_current'] = 0;
 }
 
-$current = $_SESSION['current'];
+$current = (int)$_SESSION['room2_current'];
+$totalRiddles = count($riddles);
+
+if ($current < 0) {
+  $current = 0;
+  $_SESSION['room2_current'] = 0;
+}
+
+if ($current > $totalRiddles) {
+  $current = $totalRiddles;
+  $_SESSION['room2_current'] = $totalRiddles;
+}
+
 $feedback = "";
 $hintText = "";
 
@@ -33,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($input === $correct) {
             $feedback = "✔ Correct!";
-            $_SESSION['current']++;
+          $_SESSION['room2_current']++;
 
-            if ($_SESSION['current'] >= count($riddles)) {
-                $current = $_SESSION['current'];
+          if ($_SESSION['room2_current'] >= $totalRiddles) {
+            $current = $_SESSION['room2_current'];
             } else {
                 header("Refresh:0");
                 exit;
@@ -144,7 +162,7 @@ button:hover {
 
   <div class="riddle-card">
 
-    <?php if ($current < count($riddles)): ?>
+    <?php if ($current < $totalRiddles): ?>
 
       <p id="riddleText">
         <?php echo htmlspecialchars($riddles[$current]['riddle']); ?>
@@ -161,13 +179,13 @@ button:hover {
       <p id="hintText"><?php echo $hintText; ?></p>
 
       <p id="progress">
-        Riddle <?php echo $current + 1; ?> / <?php echo count($riddles); ?>
+        Riddle <?php echo $current + 1; ?> / <?php echo $totalRiddles; ?>
       </p>
 
     <?php else: ?>
 
       <h2 style="color:#ffe4d1">Door Unlocked 🔓</h2>
-      <?php session_destroy(); ?>
+      <?php unset($_SESSION['room2_current']); ?>
 
     <?php endif; ?>
 
