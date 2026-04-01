@@ -1,21 +1,25 @@
 <?php
 session_start();
 
-if (empty($_SESSION['cult_unlocked'])) {
-  header('Location: /EpsteinIslandEscapers/index.php#cult-riddle');
-  exit;
-}
+$riddles = [
+  [
+    "question" => "I have cities, but no houses. I have mountains, but no trees. What am I?",
+    "answer" => "map",
+    "hint" => "Look at the paper on the wall."
+  ],
+  [
+    "question" => "The more of me there is, the less you see. What am I?",
+    "answer" => "darkness",
+    "hint" => "Try turning off the lights."
+  ],
+  [
+    "question" => "I always run, but never walk. I have a mouth, but never talk. What am I?",
+    "answer" => "river",
+    "hint" => "Think of flowing water."
+  ]
+];
 
-require_once('../dbcon.php');
-
-try {
-    $stmt = $db_connection->query("SELECT * FROM question WHERE roomId = 2");
-    $riddles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Databasefout: " . $e->getMessage());
-}
-
-
+// current riddle index
 if (!isset($_SESSION['current'])) {
     $_SESSION['current'] = 0;
 }
@@ -24,14 +28,13 @@ $current = $_SESSION['current'];
 $feedback = "";
 $hintText = "";
 
-
+// answer check
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['answer'])) {
         $input = strtolower(trim($_POST['answer']));
-        $correct = strtolower(trim($riddles[$current]['answer']));
 
-        if ($input === $correct) {
+        if ($input === $riddles[$current]['answer']) {
             $feedback = "✔ Correct!";
             $_SESSION['current']++;
 
@@ -146,9 +149,7 @@ button:hover {
 
     <?php if ($current < count($riddles)): ?>
 
-      <p id="riddleText">
-        <?php echo htmlspecialchars($riddles[$current]['riddle']); ?>
-      </p>
+      <p id="riddleText"><?php echo $riddles[$current]['question']; ?></p>
 
       <form method="POST">
         <input type="text" name="answer" placeholder="Type your answer..." required>
@@ -159,7 +160,6 @@ button:hover {
 
       <p id="feedback"><?php echo $feedback; ?></p>
       <p id="hintText"><?php echo $hintText; ?></p>
-
       <p id="progress">
         Riddle <?php echo $current + 1; ?> / <?php echo count($riddles); ?>
       </p>
