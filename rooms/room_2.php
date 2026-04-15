@@ -97,12 +97,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
   
-  // Hint request
+ 
   if (isset($_POST['hint']) && $currentLocker >= 0 && $currentLocker < count($lockers)) {
     $hintText = $lockers[$currentLocker]['hint'];
   }
   
-  // Key trial submission
+ 
   if (isset($_POST['key_attempt']) && isset($_POST['key_choice'])) {
     $keyChoice = (int)$_POST['key_choice'];
     $correctKey = 2; // Gold key (from Corroded Filing Cabinet C) is the correct one
