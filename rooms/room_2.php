@@ -8,7 +8,7 @@ if (empty($_SESSION['cult_unlocked'])) {
 
 require_once('../admin/question.php');
 
-// Get Room 2 riddles from database
+
 $room2Riddles = [];
 if (isset($question) && is_array($question)) {
   $room2Riddles = array_values(
@@ -22,15 +22,15 @@ if (count($room2Riddles) === 0) {
   die('No riddles found for Room 2 in admin/question.php');
 }
 
-// Initialize session variables
+
 if (!isset($_SESSION['room2_phase'])) {
-  $_SESSION['room2_phase'] = 'exploration'; // exploration or trial
+  $_SESSION['room2_phase'] = 'exploration'; 
   $_SESSION['room2_keys_found'] = [];
   $_SESSION['room2_lockers_solved'] = [];
   $_SESSION['room2_attempts'] = 0;
 }
 
-// Define 5 lockers with riddles (we'll use the 3 from DB and create 2 more)
+
 $lockers = [
   0 => [
     'name' => 'Rusted Metal Locker A',
@@ -73,10 +73,9 @@ $feedback = "";
 $hintText = "";
 $currentLocker = isset($_POST['locker_id']) ? (int)$_POST['locker_id'] : -1;
 
-// Handle form submissions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
-  // Answer submission for locker riddle
+ 
   if (isset($_POST['answer']) && $currentLocker >= 0 && $currentLocker < count($lockers)) {
     $input = strtolower(trim($_POST['answer']));
     $correct = strtolower(trim($lockers[$currentLocker]['answer']));
@@ -536,7 +535,6 @@ button:active {
 
 <div class="room-container">
 
-  <!-- Header -->
   <header class="room-header">
     <p class="eyebrow">Room 2 // Containment Ward</p>
     <h1 class="room-title">The Facility</h1>
