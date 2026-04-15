@@ -138,6 +138,20 @@ button:hover {
   font-size: 14px;
 }
 </style>
+<script>
+let timeLeft = <?php echo max(0, $remaining); ?>;
+
+function updateTimer() {
+    document.getElementById("timer").innerText = "Tijd: " + timeLeft + "s";
+
+    if (timeLeft <= 0) {
+        window.location.href = "?status=lost";
+    }
+
+    timeLeft--;
+}
+setInterval(updateTimer, 1000);
+</script>
 
 </head>
 <body>
