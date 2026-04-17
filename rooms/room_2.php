@@ -6,6 +6,11 @@ if (empty($_SESSION['cult_unlocked'])) {
   exit;
 }
 
+if (empty($_SESSION['room1_completed'])) {
+  header('Location: /EpsteinIslandEscapers/rooms/room_1.php');
+  exit;
+}
+
 require_once('../admin/question.php');
 
 $riddles = [];
@@ -185,6 +190,7 @@ button:hover {
     <?php else: ?>
 
       <h2 style="color:#ffe4d1">Door Unlocked 🔓</h2>
+      <?php $_SESSION['room2_completed'] = true; ?>
       <?php unset($_SESSION['room2_current']); ?>
 
     <?php endif; ?>

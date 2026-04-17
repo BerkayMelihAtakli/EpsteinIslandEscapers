@@ -430,6 +430,66 @@ button {
   min-height: 84px;
 }
 
+.trialActionsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cipherHintPanel[hidden],
+.morseTableWrap[hidden] {
+  display: none !important;
+}
+
+.cipherHintPanel {
+  border: 1px solid #f0c3a85f;
+  background:
+    linear-gradient(135deg, #2a0c0ccf 0%, #170707bf 100%),
+    repeating-linear-gradient(
+      90deg,
+      #ffffff03 0,
+      #ffffff03 1px,
+      transparent 1px,
+      transparent 16px
+    );
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: inset 0 0 0 1px #5f202066;
+}
+
+.cipherHintBadge {
+  width: fit-content;
+  padding: 4px 8px;
+  border: 1px solid #f0c3a85f;
+  background-color: #3a1414c9;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #ffe6d3;
+}
+
+.cipherHintTitle {
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: 22px;
+  color: #ffe6d3;
+}
+
+.cipherHintText,
+.cipherHintExample {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #f0d2bf;
+}
+
+.cipherHintExample span {
+  color: #ffe9db;
+  letter-spacing: 1px;
+}
+
 .morseBeacon {
   font-family: ShareTech, Arial, Helvetica, sans-serif;
   font-size: 12px;
@@ -444,6 +504,44 @@ button {
   color: #ffe8d8;
   letter-spacing: 2px;
   margin-right: 6px;
+}
+
+.morseTableWrap {
+  border: 1px solid #8e4c4c80;
+  background:
+    linear-gradient(180deg, #190707cf 0%, #120505c7 100%),
+    repeating-linear-gradient(
+      90deg,
+      #ffffff03 0,
+      #ffffff03 1px,
+      transparent 1px,
+      transparent 16px
+    );
+  padding: 10px;
+  box-shadow: inset 0 0 0 1px #5f202066;
+}
+
+.morseTableTitle {
+  font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
+  font-size: 22px;
+  color: #ffe6d3;
+  margin-bottom: 8px;
+}
+
+.morseTableGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.morseTableGrid span {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #f0d2bf;
+  padding: 8px 10px;
+  border: 1px solid #f0c3a833;
+  background-color: #120606;
+  letter-spacing: 0.6px;
 }
 
 .trialInput {

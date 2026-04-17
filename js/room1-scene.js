@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var MAX_SIGIL_PLAYS = 3;
+  var MAX_SIGIL_PLAYS = 5;
   var SIGIL_PLAY_STORAGE_KEY = 'room1_sigil_preview_count_v1';
 
   var state = {
@@ -13,6 +13,10 @@
   var nextButton = document.getElementById('roomOneNextButton');
   var exitSection = document.getElementById('roomOneExit');
   var exitText = document.getElementById('roomOneExitText');
+  var cipherHintPanel = document.getElementById('cipherHintPanel');
+  var morseHintPanel = document.getElementById('morseHintPanel');
+  var room1Token = document.body && document.body.dataset ? document.body.dataset.room1Token : '';
+  var room1CompletionSent = false;
   var sigilStatus = document.getElementById('sigilStatus');
   var stageNodes = {
     cipher: document.getElementById('stage-cipher'),
@@ -175,6 +179,18 @@
       if (exitText) {
         exitText.textContent = 'The containment field is down. The corridor to Room 2 is open.';
       }
+      if (!room1CompletionSent && room1Token) {
+        room1CompletionSent = true;
+        fetch('/EpsteinIslandEscapers/rooms/complete_room1.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token: room1Token })
+        }).catch(function () {
+          room1CompletionSent = false;
+        });
+      }
       return;
     }
 
@@ -201,6 +217,36 @@
     }
 
     setFeedback('feedback-cipher', 'Wrong omen interpretation. Try again.', false);
+  }
+
+  function toggleCipherHint() {
+    var hintButton = document.querySelector('[data-action="toggle-cipher-hint"]');
+
+    toggleHintPanel(cipherHintPanel, hintButton);
+  }
+
+  function toggleMorseHint() {
+    var hintButton = document.querySelector('[data-action="toggle-morse-hint"]');
+    toggleHintPanel(morseHintPanel, hintButton);
+  }
+
+  function toggleHintPanel(panel, button) {
+    if (!panel || !button) {
+      return;
+    }
+
+    var shouldOpen = panel.hasAttribute('hidden');
+
+    if (shouldOpen) {
+      panel.removeAttribute('hidden');
+      button.textContent = 'Hide Hint';
+      button.setAttribute('aria-expanded', 'true');
+      return;
+    }
+
+    panel.setAttribute('hidden', 'hidden');
+    button.textContent = 'Show Hint';
+    button.setAttribute('aria-expanded', 'false');
   }
 
   function clearSigilQueue(message, ok) {
@@ -297,7 +343,7 @@
       button.classList.add('sigilFlash');
       window.setTimeout(function () {
         button.classList.remove('sigilFlash');
-      }, 130);
+      }, 170);
     }, delayMs);
   }
 
@@ -312,7 +358,7 @@
     }
 
     if (sigilPlayCount >= MAX_SIGIL_PLAYS) {
-      setFeedback('feedback-sigil', 'Preview limit reached: 3/3 used. No more ritual previews.', false);
+      setFeedback('feedback-sigil', 'Preview limit reached: 5/5 used. No more ritual previews.', false);
       updateSigilStatus();
       return;
     }
@@ -325,13 +371,13 @@
     updateSigilStatus();
 
     for (var i = 0; i < sigilPattern.length; i += 1) {
-      flashRune(sigilPattern[i], 170 * i);
+      flashRune(sigilPattern[i], 230 * i);
     }
 
     window.setTimeout(function () {
       sigilPlayback = false;
       setFeedback('feedback-sigil', 'Repeat the route now.', true);
-    }, 170 * sigilPattern.length + 120);
+    }, 230 * sigilPattern.length + 150);
   }
 
   function buildForgedCode() {
@@ -388,6 +434,16 @@
 
     if (action === 'solve-cipher') {
       tryCipher();
+      return;
+    }
+
+    if (action === 'toggle-cipher-hint') {
+      toggleCipherHint();
+      return;
+    }
+
+    if (action === 'toggle-morse-hint') {
+      toggleMorseHint();
       return;
     }
 
