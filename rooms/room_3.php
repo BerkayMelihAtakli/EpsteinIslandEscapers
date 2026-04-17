@@ -28,7 +28,9 @@ if (isset($_POST['reset'])) {
 }
 
 // Init current riddle
-$_SESSION['current'] = 0;
+if (!isset($_SESSION['current'])) {
+    $_SESSION['current'] = 0;
+}
 $current = $_SESSION['current'];
 $feedback = "";
 $hintText = "";
