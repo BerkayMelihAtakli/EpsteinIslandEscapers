@@ -7,6 +7,10 @@ if (empty($_SESSION['cult_unlocked'])) {
   header('Location: /EpsteinIslandEscapers/index.php#cult-riddle');
   exit;
 }
+
+if (empty($_SESSION['room1_token'])) {
+  $_SESSION['room1_token'] = bin2hex(random_bytes(16));
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +85,17 @@ if (empty($_SESSION['cult_unlocked'])) {
               <span class="omenWord">FPIIH</span>
           </div>
             <p class="trialPrompt">Translate the omen signal.</p>
-            <input type="text" class="trialInput" id="trial-cipher" placeholder="Decoded omen phrase">
+          <div class="trialActionsRow">
+            <button class="trialButton trialButtonGhost" data-action="toggle-cipher-hint" type="button" aria-expanded="false" aria-controls="cipherHintPanel">Show Hint</button>
+          </div>
+          <div class="cipherHintPanel" id="cipherHintPanel" hidden>
+            <p class="cipherHintBadge">Hint</p>
+            <p class="cipherHintTitle">Cipher example</p>
+            <p class="cipherHintText">Each letter goes back 4 places in the alphabet to reveal the real one.</p>
+            <p class="cipherHintExample">Example: <span>V</span> becomes <span>S</span>, <span>L</span> becomes <span>I</span>, <span>R</span> becomes <span>O</span>.</p>
+            <p class="cipherHintText">So you are undoing a +3 shift on every letter until the full sentence makes sense.</p>
+          </div>
+          <input type="text" class="trialInput" id="trial-cipher" placeholder="Decoded omen phrase">
           <button class="trialButton" data-action="solve-cipher" type="button">Decode Omen</button>
           <p class="trialFeedback" id="feedback-cipher" aria-live="polite"></p>
         </section>
@@ -91,7 +105,7 @@ if (empty($_SESSION['cult_unlocked'])) {
           <p class="stageLockNote" id="locknote-sigil">Stage sealed. Complete Stage 1 to awaken this chamber.</p>
           <p class="trialType">Ritual Pattern</p>
           <h3>Trial 2: Sigil Disarm</h3>
-          <p class="trialPrompt">Watch the pulse and repeat the route. Maximum previews: 3 total.</p>
+          <p class="trialPrompt">Watch the pulse and repeat the route. Maximum previews: 5 total.</p>
           <div class="sigilLock" id="sigilLock" aria-label="Sigil pattern lock">
             <button class="sigilRune" data-rune="b1" type="button">✦</button>
             <button class="sigilRune" data-rune="b2" type="button">☾</button>
@@ -103,7 +117,7 @@ if (empty($_SESSION['cult_unlocked'])) {
             <button class="sigilRune" data-rune="b8" type="button">☿</button>
             <button class="sigilRune" data-rune="b9" type="button">ᚨ</button>
           </div>
-          <p class="sigilStatus" id="sigilStatus">Sigil stable | Failures: 0 | Input: 0/9 | Previews used: 0/3</p>
+          <p class="sigilStatus" id="sigilStatus">Sigil stable | Failures: 0 | Input: 0/9 | Previews used: 0/5</p>
           <div class="sigilActions">
             <button class="trialButton" data-action="start-sigil" type="button">Start Ritual</button>
             <button class="trialButton" data-action="submit-sigil" type="button">Submit Order</button>
@@ -121,6 +135,25 @@ if (empty($_SESSION['cult_unlocked'])) {
           <p class="morseBeacon" aria-label="strange signal">
             Signal drift: <span>....-</span> <span>.....</span> <span>.----</span> <span>...--</span> <span>---..</span>
           </p>
+          <div class="trialActionsRow">
+            <button class="trialButton trialButtonGhost" data-action="toggle-morse-hint" type="button" aria-expanded="false" aria-controls="morseHintPanel">Show Hint</button>
+          </div>
+          <div class="morseTableWrap" id="morseHintPanel" aria-label="Morse code table" hidden>
+            <p class="cipherHintBadge">Hint</p>
+            <p class="morseTableTitle">Morse Table</p>
+            <div class="morseTableGrid">
+              <span>0 = -----</span>
+              <span>1 = .----</span>
+              <span>2 = ..---</span>
+              <span>3 = ...--</span>
+              <span>4 = ....-</span>
+              <span>5 = .....</span>
+              <span>6 = -....</span>
+              <span>7 = --...</span>
+              <span>8 = ---..</span>
+              <span>9 = ----.</span>
+            </div>
+          </div>
           <input type="text" class="trialInput" id="trial-password" inputmode="numeric" placeholder="#####">
           <button class="trialButton" data-action="solve-password" type="button">Unlock Code</button>
           <p class="trialFeedback" id="feedback-password" aria-live="polite"></p>
