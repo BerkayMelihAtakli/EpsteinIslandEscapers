@@ -1,6 +1,3 @@
-<footer>
-    <section class="footerContainer">
-            
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-brand">
@@ -34,12 +31,6 @@
   <div class="footer-bottom">
     <p>© 2026 EpsteinIslandEscapers. All rights reserved.</p>
   </div>
-</footer>
-
-
-</style>
-
-    </section>
 </footer>
 
 <!-- page scripts -->

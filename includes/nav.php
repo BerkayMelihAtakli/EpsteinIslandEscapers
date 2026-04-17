@@ -1,5 +1,12 @@
 <nav>
     <div class="navContainer">
+        <?php 
+        $current_file = basename($_SERVER['PHP_SELF']);
+        $is_room = in_array($current_file, ['room_1.php', 'room_2.php', 'room_3.php']);
+        if (!empty($_SESSION['team_name']) && $is_room): 
+        ?>
+            <div class="team-badge">Team: <?php echo htmlspecialchars($_SESSION['team_name']); ?></div>
+        <?php endif; ?>
         <div class="navLeft">
             <div class="navLeft">
                 <div class="oog"><svg class="pointer" width="30" height="30" viewBox="0 0 100 100" fill="none"
@@ -22,8 +29,9 @@
         </div>
         <div class="navRight">
             <ul class="big-ul">
-                <li><a href="#" class="navNormalLink">Home</a></li>
-                <li><a href="#" class="navNormalLink">Reviews</a></li>
+                <li><a href="/EpsteinIslandEscapers/index.php" class="navNormalLink">Home</a></li>
+                <li><a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="navNormalLink">Join the Cult</a></li>
+                <li><a href="/EpsteinIslandEscapers/create_team.php" class="navNormalLink">Create Team</a></li>
                 <li>
                     <div class="joinCultDesign">
                         <a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="joinCult">Join the Cult</a>
@@ -39,12 +47,17 @@
             <ul class="side-ul">
                 <li class="b-li">
                     <div class="sideNavDesign">
-                        <a href="#" class="sideNavLink">Home</a>
+                        <a href="/EpsteinIslandEscapers/index.php" class="sideNavLink">Home</a>
                     </div>
                 </li>
                 <li class="b-li">
                     <div class="sideNavDesign">
-                        <a href="#" class="sideNavLink">Reviews</a>
+                        <a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="sideNavLink">Join the Cult</a>
+                    </div>
+                </li>
+                <li class="b-li">
+                    <div class="sideNavDesign">
+                        <a href="/EpsteinIslandEscapers/create_team.php" class="sideNavLink">Create Team</a>
                     </div>
                 </li>
                 <li class="sideInfoItem">

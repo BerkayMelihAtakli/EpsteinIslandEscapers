@@ -528,10 +528,68 @@ button:active {
     grid-template-columns: 1fr;
   }
 }
+
+.team-badge-container {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1500;
+  white-space: nowrap;
+}
+
+.quit-button {
+  padding: 10px 14px;
+  background: rgba(177, 31, 31, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  color: #f3e8d7;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  display: inline-block;
+}
+
+.quit-button:hover {
+  background: rgba(177, 31, 31, 0.6);
+  border-color: rgba(240, 195, 168, 0.7);
+}
+
+.team-badge-only {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  color: #f3e8d7;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 </style>
 
 </head>
 <body>
+<?php 
+$current_file = basename($_SERVER['PHP_SELF']);
+$is_room = in_array($current_file, ['room_1.php', 'room_2.php', 'room_3.php']);
+if (!empty($_SESSION['team_name']) && $is_room): 
+?>
+  <div class="team-badge-container">
+    <a href="/EpsteinIslandEscapers/index.php" class="quit-button">Quit</a>
+    <div class="team-badge-only">Team: <?php echo htmlspecialchars($_SESSION['team_name']); ?></div>
+  </div>
+<?php endif; ?>
 
 <div class="room-container">
 

@@ -20,6 +20,16 @@ if (empty($_SESSION['cult_unlocked'])) {
 </head>
 
 <body class="roomOneBody">
+  <?php 
+  $current_file = basename($_SERVER['PHP_SELF']);
+  $is_room = in_array($current_file, ['room_1.php', 'room_2.php', 'room_3.php']);
+  if (!empty($_SESSION['team_name']) && $is_room): 
+  ?>
+    <div class="team-badge-container">
+      <a href="/EpsteinIslandEscapers/index.php" class="quit-button">Quit</a>
+      <div class="team-badge-only">Team: <?php echo htmlspecialchars($_SESSION['team_name']); ?></div>
+    </div>
+  <?php endif; ?>
   <main class="roomOneMain">
     <div class="siteMorseDust" aria-hidden="true">
       <span>....-</span>
