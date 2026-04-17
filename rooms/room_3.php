@@ -1,85 +1,76 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+session_start();
+
+// Riddles in het Nederlands
+$riddles = [
+    [
+        "question" => "Ik spreek zonder mond en luister zonder oren. Ik heb geen lichaam, maar ik kom tot leven met de wind. Wat ben ik?",
+        "answer" => "echo",
+        "hint" => "Het is iets dat je hoort als het je woorden herhaalt."
+    ],
+    [
+        "question" => "Hoe meer je van mij wegneemt, hoe groter ik word. Wat ben ik?",
+        "answer" => "gat",
+        "hint" => "Denk aan graven of lege ruimtes."
+    ],
+    [
+        "question" => "Ik heb toetsen maar geen sloten. Ik heb een spatie maar geen kamer. Je kunt mij betreden, maar je kunt niet naar buiten. Wat ben ik?",
+        "answer" => "toetsenbord",
+        "hint" => "Je gebruikt mij om te typen."
+    ]
+];
+
+
+if (isset($_POST['reset'])) {
+    $_SESSION['current'] = 0;
+    header("Refresh:0");
+    exit;
 }
 
-if (empty($_SESSION['cult_unlocked'])) {
-  header('Location: /EpsteinIslandEscapers/index.php#cult-riddle');
-  exit;
+// Init current riddle
+if (!isset($_SESSION['current'])) {
+    $_SESSION['current'] = 0;
 }
+$current = $_SESSION['current'];
+$feedback = "";
+$hintText = "";
 
-if (empty($_SESSION['room2_completed'])) {
-  header('Location: /EpsteinIslandEscapers/rooms/room_2.php');
-  exit;
-}
+// Form handling
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-require_once('../admin/question.php');
-
-$riddles = [];
-if (isset($question) && is_array($question)) {
-  $riddles = array_values(
-    array_filter($question, function ($item) {
-      return isset($item['roomId']) && (string)$item['roomId'] === '3';
-    })
-  );
-}
-
-if (count($riddles) === 0) {
-  die('No riddles found for Room 3 in admin/question.php');
-}
-
-if (!isset($_SESSION['room3_current'])) {
-  $_SESSION['room3_current'] = 0;
-}
-
-$current = (int)$_SESSION['room3_current'];
-$totalRiddles = count($riddles);
-
-if ($current < 0) {
-  $current = 0;
-  $_SESSION['room3_current'] = 0;
-}
-
-if ($current > $totalRiddles) {
-  $current = $totalRiddles;
-  $_SESSION['room3_current'] = $totalRiddles;
-}
-
-$feedback = '';
-$hintText = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_POST['answer']) && $current < $totalRiddles) {
-    $input = strtolower(trim((string)$_POST['answer']));
-    $correct = strtolower(trim((string)$riddles[$current]['answer']));
-
-    if ($input === $correct) {
-      $feedback = '✔ Correct!';
-      $_SESSION['room3_current']++;
-
-      if ($_SESSION['room3_current'] >= $totalRiddles) {
-        $current = $_SESSION['room3_current'];
-      } else {
-        header('Refresh:0');
-        exit;
-      }
-    } else {
-      $feedback = '✖ Wrong answer';
+    // Hint knop
+    if (isset($_POST['hint'])) {
+        $hintText = $riddles[$current]['hint'];
     }
-  }
 
-  if (isset($_POST['hint']) && $current < $totalRiddles) {
-    $hintText = (string)$riddles[$current]['hint'];
-  }
+    // Submit knop
+    if (isset($_POST['answer'])) {
+        $input = strtolower(trim($_POST['answer']));
+        if ($input === $riddles[$current]['answer']) {
+            $_SESSION['current']++;
+            if ($_SESSION['current'] >= count($riddles)) {
+                header("Location: ?status=win");
+                exit;
+            } else {
+                header("Refresh:0");
+                exit;
+            }
+        } else {
+            header("Location: ?status=lost");
+            exit;
+        }
+    }
 }
+
+$status = isset($_GET['status']) ? $_GET['status'] : "";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Room 3 - Escape Room</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escape Room</title>
 <style>
 body {
   margin: 0;
@@ -91,8 +82,13 @@ body {
   height: 100vh;
 }
 
-.escape-room {
+.escape-room, .ending {
   text-align: center;
+  background: #1a0505;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px #000;
+  color: #fff;
 }
 
 .room-title {
@@ -100,26 +96,6 @@ body {
   color: #ffe4d1;
   margin-bottom: 20px;
   text-shadow: 0 0 20px #b11f1f;
-}
-
-.riddle-card {
-  background: #1a0505;
-  border: 1px solid #8f1010;
-  padding: 25px;
-  border-radius: 12px;
-  width: 320px;
-  box-shadow: 0 10px 30px #000;
-}
-
-#riddleText {
-  color: #f0d2bf;
-  margin-bottom: 15px;
-  line-height: 1.5;
-}
-
-#progress {
-  margin-top: 10px;
-  color: #c9a8a8;
 }
 
 input {
@@ -145,55 +121,49 @@ button:hover {
   background: #7a1a1a;
 }
 
-#feedback {
-  margin-top: 10px;
-  color: #ffb3b3;
-}
-
-#hintText {
-  margin-top: 10px;
-  color: #f2d9b0;
-  font-size: 14px;
-}
+#feedback { color: #ffb3b3; margin-top: 10px; }
+#hintText { color: #f2d9b0; margin-top: 10px; font-size: 14px; }
+.home-button { background:#5c0b0b; padding:10px 20px; margin-top:20px; display:inline-block; }
 </style>
-
 </head>
 <body>
 
-<div class="escape-room">
-  <h1 class="room-title">Room 3</h1>
-
-  <div class="riddle-card">
-
-    <?php if ($current < $totalRiddles): ?>
-
-      <p id="riddleText">
-        <?php echo htmlspecialchars($riddles[$current]['riddle']); ?>
-      </p>
-
-      <form method="POST">
-        <input type="text" name="answer" placeholder="Type your answer..." required>
-        <br>
-        <button type="submit">Submit</button>
-        <button type="submit" name="hint">Hint</button>
-      </form>
-
-      <p id="feedback"><?php echo $feedback; ?></p>
-      <p id="hintText"><?php echo $hintText; ?></p>
-
-      <p id="progress">
-        Riddle <?php echo $current + 1; ?> / <?php echo $totalRiddles; ?>
-      </p>
-
-    <?php else: ?>
-
-      <h2 style="color:#ffe4d1">Final Door Unlocked 🔓</h2>
-      <?php unset($_SESSION['room3_current']); ?>
-
-    <?php endif; ?>
-
+<?php if ($status === "win"): ?>
+  <div class="ending">
+      <h1>Gefeliciteerd!</h1>
+      <p>Je hebt het gehaald.</p>
+      <form method="POST"><button type="submit" name="reset" class="home-button">Opnieuw beginnen</button></form>
+      <a href="/EpsteinIslandEscapers/index.php"><button class="home-button">Home</button></a>
   </div>
-</div>
+
+<?php elseif ($status === "lost"): ?>
+  <div class="ending">
+      <h1>Verloren</h1>
+      <p>Je hebt het niet gehaald.</p>
+      <form method="POST"><button type="submit" name="reset" class="home-button">Opnieuw proberen</button></form>
+      <a href="/EpsteinIslandEscapers/index.php"><button class="home-button">Home</button></a>
+  </div>
+
+<?php else: ?>
+  <div class="escape-room">
+      <h1 class="room-title">Room 3</h1>
+      <div class="riddle-card">
+          <p id="riddleText"><?php echo $riddles[$current]['question']; ?></p>
+
+          <form method="POST">
+              <input type="text" name="answer" placeholder="Type je antwoord..." required>
+              <br>
+              <button type="submit">Submit</button>
+              <button type="submit" name="hint">Hint</button>
+              <button type="submit" name="reset">Reset</button>
+          </form>
+
+          <p id="feedback"><?php echo $feedback; ?></p>
+          <p id="hintText"><?php echo $hintText; ?></p>
+          <p id="progress">Vraag <?php echo $current + 1; ?> / <?php echo count($riddles); ?></p>
+      </div>
+  </div>
+<?php endif; ?>
 
 </body>
 </html>
