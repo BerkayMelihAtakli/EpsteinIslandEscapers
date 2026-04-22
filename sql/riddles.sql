@@ -12,17 +12,17 @@ CREATE TABLE question (
 
 
 INSERT INTO question (riddle, hint, answer, roomId) VALUES
--- Kamer 1
-('Ik heb steden, maar geen huizen. Ik heb bergen, maar geen bomen. Wat ben ik?', 'Kijk eens op de muur naar die papieren kaart.', 'kaart', 1),
-('Hoe meer er van mij is, hoe minder je ziet. Wat ben ik?', 'Doe het licht maar eens uit.', 'duisternis', 1),
-('Ik loop altijd, maar heb geen benen. Ik heb een mond, maar spreek nooit. Wat ben ik?', 'Denk aan kabbelend water.', 'rivier', 1),
+-- Room 1
+('I have cities, but no houses. I have mountains, but no trees. What am I?', 'Take a look at the paper map on the wall.', 'map', 1),
+('The more of me there is, the less you see. What am I?', 'Try turning off the lights.', 'darkness', 1),
+('I always run, but have no legs. I have a mouth, but never speak. What am I?', 'Think of flowing water.', 'river', 1),
 
--- Kamer 2 
-('Ik ben licht als een veer, maar zelfs de sterkste man kan mij niet lang vasthouden. Wat ben ik?', 'Je doet het nu terwijl je leest.', 'adem', 2),
-('Wat heeft sleutels maar kan geen sloten openen?', 'Het staat vaak in een woonkamer of muziekschool.', 'piano', 2),
-('Wat wordt natter naarmate het meer droogt?', 'Je gebruikt dit na het douchen.', 'handdoek', 2),
+-- Room 2 
+('I am light as a feather, yet even the strongest man cannot hold me for long. What am I?', 'You are doing it right now while reading.', 'breath', 2),
+('What has keys but cannot open locks?', 'You often find it in a living room or music school.', 'piano', 2),
+('What gets wetter the more it dries?', 'You use it after showering.', 'towel', 2),
 
--- Kamer 3
-('Wat heeft een gezicht en twee handen, maar geen armen of benen?', 'Het tikt...', 'klok', 3),
-('Ik heb gaten aan de bovenkant en de onderkant, aan de linkerkant en de rechterkant, en toch houd ik water vast. Wat ben ik?', 'Je vindt me in de keuken.', 'spons', 3),
-('Wat is van jou, maar wordt door anderen veel vaker gebruikt dan door jezelf?', 'Het staat op je paspoort.', 'naam', 3);
+-- Room 3
+('What has a face and two hands, but no arms or legs?', 'It ticks...', 'clock', 3),
+('I have holes on the top and bottom, left and right, yet I still hold water. What am I?', 'You can find me in the kitchen.', 'sponge', 3),
+('What belongs to you, but is used by others more than yourself?', 'It is on your passport.', 'name', 3);

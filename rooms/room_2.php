@@ -6,20 +6,85 @@ if (empty($_SESSION['cult_unlocked'])) {
   exit;
 }
 
-require_once('../admin/question.php');
+require_once('../database.php');
+require_once('../includes/schema.php');
+
+ensureProjectSchema($db_connection);
+
+function normalizeAnswer(string $value): string {
+  $value = strtolower(trim($value));
+  $value = preg_replace('/[^a-z0-9\s]/', '', $value) ?? '';
+  $value = preg_replace('/\s+/', ' ', $value) ?? '';
+  return trim($value);
+}
+
+function isCorrectRoom2Answer(string $input, string $correctRaw): bool {
+  $normalizedInput = normalizeAnswer($input);
+  if ($normalizedInput === '') {
+    return false;
+  }
+
+  $variants = preg_split('/\s*,\s*/', strtolower($correctRaw)) ?: [];
+  if (count($variants) === 0) {
+    $variants = [$correctRaw];
+  }
+
+  foreach ($variants as $variant) {
+    if ($normalizedInput === normalizeAnswer((string)$variant)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 
 $room2Riddles = [];
-if (isset($question) && is_array($question)) {
-  $room2Riddles = array_values(
-    array_filter($question, function ($item) {
-      return isset($item['roomId']) && (string)$item['roomId'] === '2';
-    })
+
+if ($db_connection instanceof PDO) {
+  $room2Query = $db_connection->prepare(
+    'SELECT riddle, answer, hint
+     FROM question
+     WHERE roomId = :roomId
+       AND riddle NOT LIKE :meta_trial_plain
+       AND riddle NOT LIKE :meta_trial_tagged
+     ORDER BY id DESC
+     LIMIT 3'
   );
+  $room2Query->execute([
+    ':roomId' => 2,
+    ':meta_trial_plain' => 'Pick the correct key color to open the exit.%',
+    ':meta_trial_tagged' => '[Room 2 - Exit Key Trial]%',
+  ]);
+  $room2Riddles = $room2Query->fetchAll(PDO::FETCH_ASSOC);
+
+  if (count($room2Riddles) === 3) {
+    $room2Riddles = array_reverse($room2Riddles);
+  }
 }
 
 if (count($room2Riddles) === 0) {
-  die('No riddles found for Room 2 in admin/question.php');
+  $room2Riddles = [
+    [
+      'riddle' => 'I am light as a feather, yet even the strongest man cannot hold me for long. What am I?',
+      'answer' => 'breath',
+      'hint' => 'You are doing it right now while reading.',
+    ],
+    [
+      'riddle' => 'What has keys but cannot open locks?',
+      'answer' => 'piano',
+      'hint' => 'You often find it in a living room or music school.',
+    ],
+    [
+      'riddle' => 'What gets wetter the more it dries?',
+      'answer' => 'towel',
+      'hint' => 'You use it after showering.',
+    ],
+  ];
+}
+
+if (count($room2Riddles) === 0) {
+  die('No riddles found for Room 2. Add records in table question for roomId = 2.');
 }
 
 
@@ -77,11 +142,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
  
   if (isset($_POST['answer']) && $currentLocker >= 0 && $currentLocker < count($lockers)) {
-    $input = strtolower(trim($_POST['answer']));
-    $correct = strtolower(trim($lockers[$currentLocker]['answer']));
+    $input = (string)($_POST['answer'] ?? '');
+    $correct = (string)($lockers[$currentLocker]['answer'] ?? '');
     
     if (!in_array($currentLocker, $_SESSION['room2_lockers_solved'])) {
-      if ($input === $correct) {
+      if (isCorrectRoom2Answer($input, $correct)) {
         $feedback = "✔ Correct! You found a " . $lockers[$currentLocker]['keyColor'] . " key!";
         $_SESSION['room2_lockers_solved'][] = $currentLocker;
         $_SESSION['room2_keys_found'][] = $currentLocker;
@@ -127,6 +192,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Room 2 - Island Containment</title>
+<link rel="icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
+<link rel="shortcut icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
 
 <style>
 * {
@@ -699,7 +766,7 @@ if (!empty($_SESSION['team_name']) && $is_room):
     <p class="lock-description">
       The heavy door swings open with a metallic groan. You've survived the containment ward. What horrors await in Room 3?
     </p>
-    <a href="/EpsteinIslandEscapers/room_3.php" class="next-room-button">Enter Room 3</a>
+    <a href="/EpsteinIslandEscapers/rooms/room_3.php" class="next-room-button">Enter Room 3</a>
     <?php unset($_SESSION['room2_phase']); unset($_SESSION['room2_escaped']); ?>
   </div>
   <?php endif; ?>

@@ -1,71 +1,63 @@
-# Escape Room Project
+# EpsteinIslandEscapers
 
-Welkom bij het Avontuurlijke Escape Room Project!
+EpsteinIslandEscapers is a PHP escape room website with:
+- team creation
+- three playable rooms
+- finish-time tracking
+- player reviews
+- an authenticated admin panel
 
-Jullie worden een klein beetje geholpen door wat starterscode te geven. 
-Let op, dit is alleen om een opzet te geven. Daarna gaan jullie verder bouwen.
+## Current Project Structure
 
-## Bestanden
+### Root
+- `index.php` - home page
+- `create_team.php` - team creation endpoint used by the modal
+- `database.php` - PDO database connection and auto-create logic
+- `reviews.php` - public reviews page
+- `submit_review.php` - AJAX review submission endpoint
+- `unlock_cult.php` - ritual gate unlock endpoint for the home-page riddle
 
-- **index.php**: Dit wordt de homepagina
-- **room_1**: Bevat de HTML-structuur en laadt de vragen uit de database.
-- **app.js**: Bevat de JavaScript-code voor de interactie met de vragen en antwoorden.
-- **style.css**: Bevat de styling van de pagina.
-- **dbcon.php**: Verbindt met de database en verzorgt de databaseverbinding.
-- **riddles.sql**: Bevat de database-structuur en voorbeeldvragen.
-- **overige**: In de overige bestanden dien je de opdracht te maken.
+### Shared Includes
+- `includes/header.php` - global head resources
+- `includes/nav.php` - global navigation and team badge
+- `includes/footer.php` - footer, create-team modal, reviews modal, script loading
+- `includes/schema.php` - schema bootstrap and default seed logic
 
-## Uitleg van de code
+### Gameplay
+- `rooms/room_1.php` - first room
+- `rooms/room_2.php` - second room with lockers and key trial
+- `rooms/room_3.php` - final room and finish-time persistence
+- `rooms/complete_room1.php` - endpoint for room 1 completion state
 
-### app.js
-App.js is voorzien van comments in de code. Zorg dat je het goed leest en stel vragen aan de docent als je het niet begrijpt.
+### Admin
+- `admin/index.php`
+- `admin/login.php`
+- `admin/logout.php`
+- `admin/auth.php`
+- `admin/add_team.php`
+- `admin/show_all_teams.php`
+- `admin/add_riddle.php`
+- `admin/show_all_riddles.php`
+- `admin/add_review.php`
+- `admin/show_all_reviews.php`
 
+### Frontend
+- `css/style.css`
+- `js/menu.js`
+- `js/join-riddle.js`
+- `js/create-team-modal.js`
+- `js/review-modal.js`
+- `js/room1-scene.js`
 
-### dbcon.php
-Tijdens de les zal de docent uitleg geven over hoe je verbinding maakt met de database
+## Technical Notes
+- All database access uses PDO.
+- Team and progress state are stored in PHP session.
+- The schema is created automatically by `ensureProjectSchema(...)`.
+- The project is organized by folder responsibility.
 
-### riddles.sql
-Wijzig de vragen in het sql-bestand met de vragen voor jullie Escape Room.
-Importeer dit bestand daarna in jullie database.
+## Documentation
+- `docs/simple_explanation.md`
+- `docs/technical_explanation.md`
+- `docs/extremely_detailed_technical_explanation.md`
 
-### room_1.php, room_2.php & room_3.php
-
-#### Uitleg over dataset
-
-In de onderstaande HTML- en PHP-code hebben we een interactieve vraag-en-antwoordinterface. Hier wordt gebruikgemaakt van de **dataset-eigenschap** in JavaScript, en het is goed om te begrijpen wat dit precies doet.
-
-``` html
-<div class="container">
-  <?php foreach ($riddles as $index => $riddle) : ?>
-  <div class="box" onclick="openModal(<?php echo $index; ?>)" data-index="<?php echo $index; ?>"
-    data-riddle="<?php echo htmlspecialchars($riddle['riddle']); ?>"
-    data-answer="<?php echo htmlspecialchars($riddle['answer']); ?>">
-    Box <?php echo $index + 1; ?>
-  </div>
-  <?php endforeach; ?>
-</div>
-
-```
-##### Lijst van Vragen (PHP)
-- De `foreach` loop in PHP doorloopt een array van vragen en antwoorden uit de database (`$riddles`). Voor elke vraag wordt er een `<div>`-element gemaakt met de class `box`.
-- Binnen de `div` worden er ook zogenaamde **data-attributen** toegevoegd:
-  - `data-index`: Dit is een unieke index voor elke vraag.
-  - `data-riddle`: Dit is de vraag zelf (dit komt uit de database).
-  - `data-answer`: Dit is het juiste antwoord op de vraag (dit komt uit de database).
-
-#### Het Gebruik van `dataset` in JavaScript
-
-- **Waarom `dataset` belangrijk is:** In JavaScript kunnen we de data-attributen die we in de HTML hebben toegevoegd ophalen met behulp van de `dataset`-eigenschap. Dit maakt het mogelijk om extra gegevens (zoals de vraag en het juiste antwoord) op te slaan in de HTML zonder ze zichtbaar te maken voor de gebruiker.
-
-- **Voorbeeld:** Als we kijken naar de `div` met de class `box`, zien we de data-attributen `data-index`, `data-riddle` en `data-answer`. Deze worden als volgt gebruikt:
-```javascript
-let box = document.querySelector(`.box[data-index='${index}']`); // Haalt de juiste box op (box 1, 2, 3 of 4)
-let riddleText = box.dataset.riddle;  // Haalt de vraag op uit het data-riddle attribuut
-let correctAnswer = box.dataset.answer;  // Haalt het antwoord op uit het data-answer attribuut
-```
-
-#### Voorbeeld van `box.dataset.riddle`:
-
-Stel dat de vraag **"Wat is de hoofdstad van Nederland?"** is en deze is opgeslagen in het `data-riddle` attribuut. Door `box.dataset.riddle` aan te roepen, krijg je de waarde van dat attribuut: `"Wat is de hoofdstad van Nederland?"`.
-
-Dit is handig omdat je zonder extra complexe DOM-manipulatie gegevens kunt koppelen aan elementen en deze gegevens later kunt ophalen met JavaScript, zoals bij het openen van de modal om een vraag te tonen.
+PDF exports are generated in the same `docs/` folder.

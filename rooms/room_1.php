@@ -20,6 +20,8 @@ if (empty($_SESSION['room1_token'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Room 1 - Awakening</title>
+  <link rel="icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
+  <link rel="shortcut icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 

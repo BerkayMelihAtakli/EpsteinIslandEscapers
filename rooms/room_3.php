@@ -1,37 +1,139 @@
 <?php
 session_start();
+require_once('../database.php');
+require_once('../includes/schema.php');
 
-// Riddles in het Nederlands
+ensureProjectSchema($db_connection);
+
+function formatDuration(int $seconds): string {
+  $hours = intdiv($seconds, 3600);
+  $minutes = intdiv($seconds % 3600, 60);
+  $secs = $seconds % 60;
+
+  if ($hours > 0) {
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+  }
+
+  return sprintf('%02d:%02d', $minutes, $secs);
+}
+
+function finalizeTeamEscape(?PDO $db_connection): void {
+  if (empty($_SESSION['team_id'])) {
+    return;
+  }
+
+  if (!$db_connection instanceof PDO) {
+    return;
+  }
+
+  $teamId = (int)$_SESSION['team_id'];
+
+  $update = $db_connection->prepare(
+    'UPDATE teams
+     SET finished_at = IFNULL(finished_at, NOW()),
+       elapsed_seconds = IFNULL(elapsed_seconds, TIMESTAMPDIFF(SECOND, created_at, NOW()))
+     WHERE id = :team_id'
+  );
+  $update->execute([':team_id' => $teamId]);
+
+  $read = $db_connection->prepare('SELECT finished_at, elapsed_seconds FROM teams WHERE id = :team_id LIMIT 1');
+  $read->execute([':team_id' => $teamId]);
+  $teamData = $read->fetch(PDO::FETCH_ASSOC);
+
+  if ($teamData) {
+    $_SESSION['team_finished_at'] = $teamData['finished_at'] ?? null;
+    $_SESSION['team_elapsed_seconds'] = isset($teamData['elapsed_seconds']) ? (int)$teamData['elapsed_seconds'] : null;
+  }
+}
+
+// Room 3 riddles
 $riddles = [
     [
-        "question" => "Ik spreek zonder mond en luister zonder oren. Ik heb geen lichaam, maar ik kom tot leven met de wind. Wat ben ik?",
+    "question" => "I speak without a mouth and hear without ears. I have no body, but I come to life with wind. What am I?",
         "answer" => "echo",
-        "hint" => "Het is iets dat je hoort als het je woorden herhaalt."
+    "hint" => "It is something that repeats your words back to you."
     ],
     [
-        "question" => "Hoe meer je van mij wegneemt, hoe groter ik word. Wat ben ik?",
-        "answer" => "gat",
-        "hint" => "Denk aan graven of lege ruimtes."
+    "question" => "The more you take away from me, the bigger I become. What am I?",
+    "answer" => "hole",
+    "hint" => "Think about digging or empty spaces."
     ],
     [
-        "question" => "Ik heb toetsen maar geen sloten. Ik heb een spatie maar geen kamer. Je kunt mij betreden, maar je kunt niet naar buiten. Wat ben ik?",
-        "answer" => "toetsenbord",
-        "hint" => "Je gebruikt mij om te typen."
+    "question" => "I have keys but no locks. I have space but no room. You can enter, but you cannot go outside. What am I?",
+    "answer" => "keyboard",
+    "hint" => "You use me to type."
     ]
 ];
 
+if ($db_connection instanceof PDO) {
+  $room3Query = $db_connection->prepare(
+    'SELECT riddle AS question, answer, hint
+     FROM question
+     WHERE roomId = :roomId
+     ORDER BY id DESC
+     LIMIT 3'
+  );
+
+  $room3Query->execute([
+    ':roomId' => 3,
+  ]);
+
+  $room3Rows = $room3Query->fetchAll(PDO::FETCH_ASSOC);
+
+  if (count($room3Rows) === 3) {
+    $riddles = array_reverse(array_map(function ($row) {
+      return [
+        'question' => (string)$row['question'],
+        'answer' => (string)$row['answer'],
+        'hint' => (string)$row['hint'],
+      ];
+    }, $room3Rows));
+  }
+}
+
+$reviewMessage = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+  $rating = (int)($_POST['rating'] ?? 0);
+  $difficulty = trim($_POST['difficulty'] ?? '');
+  $feedbackInput = trim($_POST['feedback'] ?? '');
+
+  if ($rating < 1 || $rating > 5) {
+    $reviewMessage = 'Kies een rating tussen 1 en 5.';
+  } elseif ($difficulty === '') {
+    $reviewMessage = 'Kies een difficulty.';
+  } elseif ($feedbackInput === '') {
+    $reviewMessage = 'Feedback mag niet leeg zijn.';
+  } elseif (!$db_connection instanceof PDO) {
+    $reviewMessage = 'Review kon niet worden opgeslagen: database niet beschikbaar.';
+  } else {
+    $insertReview = $db_connection->prepare(
+      'INSERT INTO reviews (team_id, rating, difficulty, feedback) VALUES (:team_id, :rating, :difficulty, :feedback)'
+    );
+
+    $insertReview->execute([
+      ':team_id' => !empty($_SESSION['team_id']) ? (int)$_SESSION['team_id'] : null,
+      ':rating' => $rating,
+      ':difficulty' => $difficulty,
+      ':feedback' => $feedbackInput,
+    ]);
+
+    $reviewMessage = 'Review opgeslagen. Dank je!';
+  }
+}
+
 
 if (isset($_POST['reset'])) {
-    $_SESSION['current'] = 0;
-    header("Refresh:0");
+  $_SESSION['room3_current'] = 0;
+  header('Location: /EpsteinIslandEscapers/rooms/room_3.php');
     exit;
 }
 
 // Init current riddle
-if (!isset($_SESSION['current'])) {
-    $_SESSION['current'] = 0;
+if (!isset($_SESSION['room3_current'])) {
+  $_SESSION['room3_current'] = 0;
 }
-$current = $_SESSION['current'];
+$current = (int)$_SESSION['room3_current'];
 $feedback = "";
 $hintText = "";
 
@@ -47,8 +149,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['answer'])) {
         $input = strtolower(trim($_POST['answer']));
         if ($input === $riddles[$current]['answer']) {
-            $_SESSION['current']++;
-            if ($_SESSION['current'] >= count($riddles)) {
+        $_SESSION['room3_current']++;
+        if ($_SESSION['room3_current'] >= count($riddles)) {
+          $_SESSION['canLeaveReview'] = true;
+          finalizeTeamEscape($db_connection);
                 header("Location: ?status=win");
                 exit;
             } else {
@@ -63,6 +167,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $status = isset($_GET['status']) ? $_GET['status'] : "";
+
+$finishedAtText = '';
+$elapsedText = '';
+if ($status === 'win' && !empty($_SESSION['team_id'])) {
+  if ($db_connection instanceof PDO) {
+    $teamRead = $db_connection->prepare('SELECT finished_at, elapsed_seconds FROM teams WHERE id = :team_id LIMIT 1');
+    $teamRead->execute([':team_id' => (int)$_SESSION['team_id']]);
+    $teamRow = $teamRead->fetch(PDO::FETCH_ASSOC);
+
+    if ($teamRow) {
+      if (!empty($teamRow['finished_at'])) {
+        $finishedAtText = (string)$teamRow['finished_at'];
+      }
+      if (isset($teamRow['elapsed_seconds']) && $teamRow['elapsed_seconds'] !== null) {
+        $elapsedText = formatDuration((int)$teamRow['elapsed_seconds']);
+      }
+    }
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +194,8 @@ $status = isset($_GET['status']) ? $_GET['status'] : "";
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Escape Room</title>
+<link rel="icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
+<link rel="shortcut icon" type="image/png" href="/EpsteinIslandEscapers/assets/logo.png">
 <style>
 body {
   margin: 0;
@@ -189,6 +314,25 @@ if (!empty($_SESSION['team_name']) && $is_room):
   <div class="ending">
       <h1>Gefeliciteerd!</h1>
       <p>Je hebt het gehaald.</p>
+      <?php if ($elapsedText !== ''): ?>
+        <p>Jullie eindtijd: <?php echo htmlspecialchars($elapsedText); ?></p>
+      <?php endif; ?>
+      <?php if ($finishedAtText !== ''): ?>
+        <p>Ontsnapt op: <?php echo htmlspecialchars($finishedAtText); ?></p>
+      <?php endif; ?>
+
+      <form method="POST" style="margin-top: 12px;">
+          <input type="number" name="rating" min="1" max="5" placeholder="Rating 1-5" required>
+          <input type="text" name="difficulty" placeholder="Difficulty (easy/medium/hard)" required>
+          <input type="text" name="feedback" placeholder="Leave a review" required>
+          <button type="submit" name="submit_review">Submit review</button>
+      </form>
+      <?php if ($reviewMessage !== ''): ?>
+        <p id="feedback"><?php echo htmlspecialchars($reviewMessage); ?></p>
+      <?php endif; ?>
+
+      <a href="/EpsteinIslandEscapers/reviews.php"><button class="home-button">View Reviews</button></a>
+
       <form method="POST"><button type="submit" name="reset" class="home-button">Opnieuw beginnen</button></form>
       <a href="/EpsteinIslandEscapers/index.php"><button class="home-button">Home</button></a>
   </div>

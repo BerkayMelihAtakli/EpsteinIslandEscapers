@@ -1,27 +1,7 @@
 (function () {
   'use strict'; 
 
-  var riddleCard = document.querySelector('.joinRiddleCard');
   var riddleSection = document.getElementById('cult-riddle');
-  if (!riddleCard) {
-    return;
-  }
-
-  var input = riddleCard.querySelector('.riddleInput');
-  var submit = riddleCard.querySelector('.riddleSubmit');
-  var feedback = riddleCard.querySelector('.riddleFeedback');
-  var joinUrl = riddleCard.dataset.joinUrl || '/EpsteinIslandEscapers/rooms/room_1.php';
-  var defaultSubmitText = 'Unlock';
-  var unlockedSubmitText = 'Join the Cult';
-
-  if (!input || !submit || !feedback) {
-    return;
-  }
-
-  var isUnlocked = riddleCard.dataset.unlocked === '1';
-  submit.textContent = isUnlocked ? unlockedSubmitText : defaultSubmitText;
-
-  var unlockEndpoint = '/EpsteinIslandEscapers/unlock_cult.php';
 
   function easeInOutCubic(t) {
     return t < 0.5
@@ -89,6 +69,42 @@
       });
     }
   }
+
+  function animateHashOnPageLoad() {
+    if (!riddleSection || window.location.hash !== '#cult-riddle') {
+      return;
+    }
+
+    // Replace the native hash jump with the same cinematic scroll effect.
+    window.scrollTo(0, 0);
+    window.setTimeout(function () {
+      slowScrollToRiddle(1400);
+    }, 30);
+  }
+
+  bindSlowAnchorScroll();
+  animateHashOnPageLoad();
+
+  var riddleCard = document.querySelector('.joinRiddleCard');
+  if (!riddleCard) {
+    return;
+  }
+
+  var input = riddleCard.querySelector('.riddleInput');
+  var submit = riddleCard.querySelector('.riddleSubmit');
+  var feedback = riddleCard.querySelector('.riddleFeedback');
+  var joinUrl = riddleCard.dataset.joinUrl || '/EpsteinIslandEscapers/rooms/room_1.php';
+  var defaultSubmitText = 'Unlock';
+  var unlockedSubmitText = 'Join the Cult';
+
+  if (!input || !submit || !feedback) {
+    return;
+  }
+
+  var isUnlocked = riddleCard.dataset.unlocked === '1';
+  submit.textContent = isUnlocked ? unlockedSubmitText : defaultSubmitText;
+
+  var unlockEndpoint = '/EpsteinIslandEscapers/unlock_cult.php';
 
   function normalize(value) {
     return value
@@ -165,6 +181,4 @@
       unlockIfCorrect();
     }
   });
-
-  bindSlowAnchorScroll();
 })();

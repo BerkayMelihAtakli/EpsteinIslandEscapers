@@ -1,9 +1,7 @@
 <nav>
     <div class="navContainer">
         <?php 
-        $current_file = basename($_SERVER['PHP_SELF']);
-        $is_room = in_array($current_file, ['room_1.php', 'room_2.php', 'room_3.php']);
-        if (!empty($_SESSION['team_name']) && $is_room): 
+        if (!empty($_SESSION['team_name'])): 
         ?>
             <div class="team-badge">Team: <?php echo htmlspecialchars($_SESSION['team_name']); ?></div>
         <?php endif; ?>
@@ -30,8 +28,8 @@
         <div class="navRight">
             <ul class="big-ul">
                 <li><a href="/EpsteinIslandEscapers/index.php" class="navNormalLink">Home</a></li>
-                <li><a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="navNormalLink">Join the Cult</a></li>
-                <li><a href="/EpsteinIslandEscapers/create_team.php" class="navNormalLink">Create Team</a></li>
+                <li><a href="/EpsteinIslandEscapers/reviews.php" class="navNormalLink">Reviews</a></li>
+                <li><a href="/EpsteinIslandEscapers/create_team.php" class="navNormalLink createTeamTrigger">Create Team</a></li>
                 <li>
                     <div class="joinCultDesign">
                         <a href="/EpsteinIslandEscapers/index.php#cult-riddle" class="joinCult">Join the Cult</a>
@@ -57,7 +55,12 @@
                 </li>
                 <li class="b-li">
                     <div class="sideNavDesign">
-                        <a href="/EpsteinIslandEscapers/create_team.php" class="sideNavLink">Create Team</a>
+                        <a href="/EpsteinIslandEscapers/reviews.php" class="sideNavLink">Reviews</a>
+                    </div>
+                </li>
+                <li class="b-li">
+                    <div class="sideNavDesign">
+                        <a href="/EpsteinIslandEscapers/create_team.php" class="sideNavLink createTeamTrigger">Create Team</a>
                     </div>
                 </li>
                 <li class="sideInfoItem">

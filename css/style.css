@@ -33,6 +33,121 @@ body {
   overflow-x: hidden;
 }
 
+body.team-modal-open {
+  overflow: hidden;
+}
+
+.team-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 14px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.42s ease, visibility 0s linear 0.42s;
+}
+
+.team-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.42s ease;
+}
+
+.team-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 3, 3, 0.72);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.42s ease;
+}
+
+.team-modal-panel {
+  position: relative;
+  width: min(92vw, 560px);
+  max-height: 88vh;
+  overflow-y: auto;
+  margin: 0;
+  background: rgba(247, 241, 230, 0.98);
+  border: 1px solid rgba(177, 31, 31, 0.42);
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  padding: 28px;
+  text-align: left;
+  color: #1b1412;
+  opacity: 0;
+  transform: translateY(34px) scale(0.955);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.42s ease;
+}
+
+.team-modal.is-open .team-modal-overlay {
+  opacity: 1;
+}
+
+.team-modal.is-open .team-modal-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.team-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  background: #f1e5d8;
+  color: #451717;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.team-modal-panel h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  color: #3b1a1a;
+  font-family: CormorantVariable, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.team-modal-subtitle {
+  margin-bottom: 20px;
+  color: #4d3a33;
+  line-height: 1.6;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+}
+
+.team-modal .team-form label {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.team-modal .team-form button {
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-modal-overlay,
+  .team-modal-panel {
+    transition: none;
+  }
+
+  .team-modal-panel {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 .team-form-page {
   min-height: 100vh;
   padding: 80px 16px 40px;
@@ -136,6 +251,213 @@ body {
   background: rgba(46, 90, 63, 0.16);
   border: 1px solid rgba(78, 142, 96, 0.45);
   color: #d6f0dc;
+}
+
+.admin-main {
+  min-height: 100vh;
+  padding: 96px 18px 40px;
+  background: #f2eee7;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-main * {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-shell {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #dfd6ca;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 20px 44px rgba(14, 12, 10, 0.1);
+  text-align: left;
+}
+
+.admin-shell-wide {
+  width: min(1180px, 100%);
+}
+
+.admin-shell-narrow {
+  width: min(740px, 100%);
+}
+
+.admin-head {
+  margin-bottom: 20px;
+}
+
+.admin-kicker {
+  margin-bottom: 8px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8f1010;
+}
+
+.admin-head h1 {
+  margin-bottom: 8px;
+  color: #221915;
+  font-size: 2rem;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+}
+
+.admin-head p {
+  color: #5a4d45;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.admin-actions a {
+  text-decoration: none;
+  color: #3f2a23;
+  border: 1px solid #dacbbd;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #faf5ee;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+}
+
+.admin-actions a:hover {
+  border-color: #b11f1f;
+  color: #8f1010;
+}
+
+.admin-link-card {
+  display: block;
+  border: 1px solid #e2d8cc;
+  border-radius: 10px;
+  padding: 14px;
+  background: #faf7f2;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.admin-link-card:hover {
+  border-color: #b11f1f;
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+.admin-link-title {
+  display: block;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  font-size: 1.04rem;
+  color: #241a17;
+  margin-bottom: 6px;
+}
+
+.admin-link-text {
+  display: block;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  color: #6a5a51;
+  font-size: 0.94rem;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  min-width: 760px;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #e6ddd1;
+  color: #2f2521;
+}
+
+.admin-table th {
+  background: #f6f1ea;
+  color: #4a392f;
+}
+
+.admin-inline-form {
+  margin: 0;
+}
+
+.admin-delete-btn {
+  border: 1px solid #c88484;
+  background: #fff3f3;
+  color: #7a1a1a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-delete-btn:hover {
+  background: #ffe7e7;
+  border-color: #b11f1f;
+}
+
+.review-feed-box {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 14px;
+  border: 1px solid #dfd3c5;
+  border-radius: 10px;
+  background: #fffaf5;
+  padding: 10px;
+}
+
+.review-feed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-feed-item {
+  border-bottom: 1px solid #ece2d7;
+  padding-bottom: 8px;
+}
+
+.review-feed-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-feed-meta {
+  color: #4e3f36;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+}
+
+.review-feed-text {
+  color: #2b201b;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+}
+
+.review-empty,
+.review-lock-note {
+  color: #4f3f36;
+  font-family: ShareTech, Arial, Helvetica, sans-serif;
+  margin-bottom: 12px;
 }
 
 .form-success-box {
@@ -1449,7 +1771,7 @@ nav {
 
 .navRight {
   height: 100%;
-  width: 400px;
+  width: 560px;
 }
 
 .navLeft,
@@ -1467,6 +1789,7 @@ nav {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   height: 100%;
 }
 
@@ -1501,6 +1824,7 @@ nav {
   font-family: ShareTech, Arial, Helvetica, sans-serif;
   color: #e8daca;
   display: inline-block;
+  white-space: nowrap;
   padding: 6px 10px;
   transition:
     transform 0.2s ease,
@@ -1532,6 +1856,7 @@ nav {
 .joinCult {
   font-family: CormorantVariable, "Cinzel", "Times New Roman", serif;
   font-size: 26px;
+  white-space: nowrap;
   --cult-text-color: #eadbc9;
   color: var(--cult-text-color);
   position: relative;
