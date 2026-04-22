@@ -95,7 +95,7 @@ if (empty($_SESSION['room1_token'])) {
           <p class="stageLockNote" id="locknote-sigil">Stage sealed. Complete Stage 1 to awaken this chamber.</p>
           <p class="trialType">Ritual Pattern</p>
           <h3>Trial 2: Sigil Disarm</h3>
-          <p class="trialPrompt">Watch the pulse and repeat the route. Maximum previews: 5 total.</p>
+          <p class="trialPrompt">Watch the pulse and repeat the route.</p>
           <div class="sigilLock" id="sigilLock" aria-label="Sigil pattern lock">
             <button class="sigilRune" data-rune="b1" type="button">✦</button>
             <button class="sigilRune" data-rune="b2" type="button">☾</button>
@@ -107,7 +107,7 @@ if (empty($_SESSION['room1_token'])) {
             <button class="sigilRune" data-rune="b8" type="button">☿</button>
             <button class="sigilRune" data-rune="b9" type="button">ᚨ</button>
           </div>
-          <p class="sigilStatus" id="sigilStatus">Sigil stable | Failures: 0 | Input: 0/9 | Previews used: 0/5</p>
+          <p class="sigilStatus" id="sigilStatus">Sigil stable | Failures: 0 | Input: 0/9 | Previews used: 0</p>
           <div class="sigilActions">
             <button class="trialButton" data-action="start-sigil" type="button">Start Ritual</button>
             <button class="trialButton" data-action="submit-sigil" type="button">Submit Order</button>

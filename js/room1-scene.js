@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  var MAX_SIGIL_PLAYS = 5;
   var SIGIL_PLAY_STORAGE_KEY = 'room1_sigil_preview_count_v1';
 
   var state = {
@@ -43,7 +42,7 @@
       return 0;
     }
 
-    return Math.min(MAX_SIGIL_PLAYS, Math.floor(parsed));
+    return Math.floor(parsed);
   }
 
   function persistSigilPlayCount() {
@@ -75,7 +74,7 @@
 
     var integrity = Math.max(0, 100 - sigilFailures * 15);
     sigilStatus.textContent =
-      'Sigil integrity: ' + integrity + '% | Failures: ' + sigilFailures + ' | Input: ' + sigilQueue.length + '/9 | Previews used: ' + sigilPlayCount + '/' + MAX_SIGIL_PLAYS;
+      'Sigil integrity: ' + integrity + '% | Failures: ' + sigilFailures + ' | Input: ' + sigilQueue.length + '/9 | Previews used: ' + sigilPlayCount;
   }
 
   function markSolved(trialKey) {
@@ -354,12 +353,6 @@
 
     if (isStageLocked('sigil')) {
       setFeedback('feedback-sigil', 'Stage 2 is locked. Complete Stage 1 first.', false);
-      return;
-    }
-
-    if (sigilPlayCount >= MAX_SIGIL_PLAYS) {
-      setFeedback('feedback-sigil', 'Preview limit reached: 5/5 used. No more ritual previews.', false);
-      updateSigilStatus();
       return;
     }
 

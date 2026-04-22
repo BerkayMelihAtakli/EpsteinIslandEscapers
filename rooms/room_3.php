@@ -1,24 +1,15 @@
 <?php
 session_start();
 
-// Riddles in het Nederlands
-$riddles = [
-    [
-        "question" => "Ik spreek zonder mond en luister zonder oren. Ik heb geen lichaam, maar ik kom tot leven met de wind. Wat ben ik?",
-        "answer" => "echo",
-        "hint" => "Het is iets dat je hoort als het je woorden herhaalt."
-    ],
-    [
-        "question" => "Hoe meer je van mij wegneemt, hoe groter ik word. Wat ben ik?",
-        "answer" => "gat",
-        "hint" => "Denk aan graven of lege ruimtes."
-    ],
-    [
-        "question" => "Ik heb toetsen maar geen sloten. Ik heb een spatie maar geen kamer. Je kunt mij betreden, maar je kunt niet naar buiten. Wat ben ik?",
-        "answer" => "toetsenbord",
-        "hint" => "Je gebruikt mij om te typen."
-    ]
-];
+require_once '../dbcon.php';
+
+$stmt = $db_connection->prepare('SELECT id, riddle, answer, hint FROM question WHERE roomId = :roomId ORDER BY id ASC');
+$stmt->execute([':roomId' => 3]);
+$riddles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (count($riddles) === 0) {
+  die('Geen raadsels gevonden voor Room 3. Voeg ze toe via admin/add_riddle.php.');
+}
 
 
 if (isset($_POST['reset'])) {
@@ -40,13 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Hint knop
     if (isset($_POST['hint'])) {
-        $hintText = $riddles[$current]['hint'];
+      $hintText = $riddles[$current]['hint'] ?? '';
     }
 
     // Submit knop
     if (isset($_POST['answer'])) {
         $input = strtolower(trim($_POST['answer']));
-        if ($input === $riddles[$current]['answer']) {
+      if ($input === strtolower(trim($riddles[$current]['answer']))) {
             $_SESSION['current']++;
             if ($_SESSION['current'] >= count($riddles)) {
                 header("Location: ?status=win");
@@ -148,7 +139,7 @@ button:hover {
   <div class="escape-room">
       <h1 class="room-title">Room 3</h1>
       <div class="riddle-card">
-          <p id="riddleText"><?php echo $riddles[$current]['question']; ?></p>
+          <p id="riddleText"><?php echo htmlspecialchars($riddles[$current]['riddle'], ENT_QUOTES, 'UTF-8'); ?></p>
 
           <form method="POST">
               <input type="text" name="answer" placeholder="Type je antwoord..." required>
@@ -159,7 +150,7 @@ button:hover {
           </form>
 
           <p id="feedback"><?php echo $feedback; ?></p>
-          <p id="hintText"><?php echo $hintText; ?></p>
+            <p id="hintText"><?php echo htmlspecialchars($hintText, ENT_QUOTES, 'UTF-8'); ?></p>
           <p id="progress">Vraag <?php echo $current + 1; ?> / <?php echo count($riddles); ?></p>
       </div>
   </div>

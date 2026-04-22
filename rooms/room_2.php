@@ -6,20 +6,14 @@ if (empty($_SESSION['cult_unlocked'])) {
   exit;
 }
 
-require_once('../admin/question.php');
+require_once('../dbcon.php');
 
-
-$room2Riddles = [];
-if (isset($question) && is_array($question)) {
-  $room2Riddles = array_values(
-    array_filter($question, function ($item) {
-      return isset($item['roomId']) && (string)$item['roomId'] === '2';
-    })
-  );
-}
+$stmt = $db_connection->prepare('SELECT id, riddle, answer, hint FROM question WHERE roomId = :roomId ORDER BY id ASC');
+$stmt->execute([':roomId' => 2]);
+$room2Riddles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (count($room2Riddles) === 0) {
-  die('No riddles found for Room 2 in admin/question.php');
+  die('No riddles found for Room 2. Add riddles in admin/add_riddle.php first.');
 }
 
 
@@ -31,43 +25,33 @@ if (!isset($_SESSION['room2_phase'])) {
 }
 
 
-$lockers = [
-  0 => [
-    'name' => 'Rusted Metal Locker A',
-    'riddle' => $room2Riddles[0]['riddle'] ?? 'I am light as a feather...',
-    'answer' => $room2Riddles[0]['answer'] ?? 'breath',
-    'hint' => $room2Riddles[0]['hint'] ?? 'You are doing it right now.',
-    'keyColor' => 'bronze'
-  ],
-  1 => [
-    'name' => 'Wooden Cabinet B',
-    'riddle' => $room2Riddles[1]['riddle'] ?? 'What has keys but cannot open locks?',
-    'answer' => $room2Riddles[1]['answer'] ?? 'piano',
-    'hint' => $room2Riddles[1]['hint'] ?? 'You often find it in a living room.',
-    'keyColor' => 'silver'
-  ],
-  2 => [
-    'name' => 'Corroded Filing Cabinet C',
-    'riddle' => $room2Riddles[2]['riddle'] ?? 'What gets wetter the more it dries?',
-    'answer' => $room2Riddles[2]['answer'] ?? 'towel',
-    'hint' => $room2Riddles[2]['hint'] ?? 'You use it after showering.',
-    'keyColor' => 'gold'
-  ],
-  3 => [
-    'name' => 'Padlocked Trunk D',
-    'riddle' => 'I speak without a mouth and hear without ears. I have no body, but I come to life with wind. What am I?',
-    'answer' => 'echo',
-    'hint' => 'Something that repeats your words back to you.',
-    'keyColor' => 'copper'
-  ],
-  4 => [
-    'name' => 'Chained Ammunition Box E',
-    'riddle' => 'The more you take, the more you leave behind. What am I?',
-    'answer' => 'footsteps',
-    'hint' => 'Think about walking or running.',
-    'keyColor' => 'iron'
-  ]
+$containerNames = [
+  'Rusted Metal Locker',
+  'Wooden Cabinet',
+  'Corroded Filing Cabinet',
+  'Padlocked Trunk',
+  'Chained Ammunition Box',
+  'Archive Drawer',
+  'Observation Crate',
+  'Steel Vault Bin',
 ];
+
+$keyColors = ['bronze', 'silver', 'gold', 'copper', 'iron', 'obsidian', 'ivory', 'sable'];
+$letters = range('A', 'Z');
+$lockers = [];
+
+foreach ($room2Riddles as $index => $row) {
+  $baseName = $containerNames[$index % count($containerNames)];
+  $letter = $letters[$index % count($letters)];
+
+  $lockers[$index] = [
+    'name' => $baseName . ' ' . $letter,
+    'riddle' => $row['riddle'],
+    'answer' => $row['answer'],
+    'hint' => $row['hint'] ?? '',
+    'keyColor' => $keyColors[$index % count($keyColors)],
+  ];
+}
 
 $feedback = "";
 $hintText = "";
@@ -105,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
   if (isset($_POST['key_attempt']) && isset($_POST['key_choice'])) {
     $keyChoice = (int)$_POST['key_choice'];
-    $correctKey = 2; // Gold key (from Corroded Filing Cabinet C) is the correct one
+    $correctKey = array_key_last($lockers);
     $_SESSION['room2_attempts']++;
     
     if ($keyChoice === $correctKey && in_array($correctKey, $_SESSION['room2_keys_found'])) {
@@ -641,7 +625,7 @@ button:active {
     <p class="lock-description">
       The heavy door swings open with a metallic groan. You've survived the containment ward. What horrors await in Room 3?
     </p>
-    <a href="/EpsteinIslandEscapers/room_3.php" class="next-room-button">Enter Room 3</a>
+    <a href="/EpsteinIslandEscapers/rooms/room_3.php" class="next-room-button">Enter Room 3</a>
     <?php unset($_SESSION['room2_phase']); unset($_SESSION['room2_escaped']); ?>
   </div>
   <?php endif; ?>
