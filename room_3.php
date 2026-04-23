@@ -1,175 +1,283 @@
 <?php
 session_start();
 
-// Riddles
-$riddles = [
-    [
-        "question" => "Ik spreek zonder mond en luister zonder oren. Ik heb geen lichaam, maar ik kom tot leven met de wind. Wat ben ik?",
-        "answer" => "echo",
-        "hint" => "Het is iets dat je hoort als het je woorden herhaalt."
-    ],
-    [
-        "question" => "Hoe meer je van mij wegneemt, hoe groter ik word. Wat ben ik?",
-        "answer" => "gat",
-        "hint" => "Denk aan graven of lege ruimtes."
-    ],
-    [
-        "question" => "Ik heb toetsen maar geen sloten. Ik heb een spatie maar geen kamer. Je kunt mij betreden, maar je kunt niet naar buiten. Wat ben ik?",
-        "answer" => "toetsenbord",
-        "hint" => "Je gebruikt mij om te typen."
-    ]
-];
 
-// Init
-if (!isset($_SESSION['current'])) $_SESSION['current'] = 0;
-if (!isset($_SESSION['hint'])) $_SESSION['hint'] = "";
-if (!isset($_SESSION['start_time'])) $_SESSION['start_time'] = time();
-
-$current = $_SESSION['current'];
-$hintText = $_SESSION['hint'];
-$timeLimit = 30;
-
-// Reset
-if (isset($_POST['reset'])) {
-    $_SESSION['current'] = 0;
-    $_SESSION['hint'] = "";
-    $_SESSION['start_time'] = time();
+if (isset($_GET['restart'])) {
+    session_destroy();
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// FORM HANDLING (BELANGRIJK)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Hint knop
-    if (isset($_POST['hint'])) {
-        $_SESSION['hint'] = $riddles[$current]['hint'];
+$totalTime = 60;
+
+if (!isset($_SESSION['start_time'])) {
+    $_SESSION['start_time'] = time();
+}
+
+
+if (!isset($_SESSION['status'])) {
+    $_SESSION['status'] = 'playing';
+}
+
+
+if (!isset($_SESSION['reviews'])) {
+    $_SESSION['reviews'] = [];
+}
+
+
+$riddles = [
+ [
+    "question" => "Ik ben altijd bij je, maar je kunt mij nooit aanraken. Wat ben ik?",
+    "answer" => "schaduw",
+    "hint" => "Ik volg je als de zon schijnt."
+],
+[
+    "question" => "Ik heb een gezicht maar geen ogen, handen maar geen armen. Wat ben ik?",
+    "answer" => "klok",
+    "hint" => "Ik hang vaak aan de muur en geef tijd aan."
+],
+[
+    "question" => "Wat wordt natter terwijl het droogt?",
+    "answer" => "handdoek",
+    "hint" => "Je gebruikt mij na het douchen."
+]
+];
+
+
+if (!isset($_SESSION['current'])) {
+    $_SESSION['current'] = 0;
+}
+
+$current = $_SESSION['current'];
+
+
+$hintText = $_SESSION['hint'] ?? "";
+
+
+$elapsed = time() - $_SESSION['start_time'];
+$remaining = $totalTime - $elapsed;
+
+if ($remaining <= 0) {
+    $_SESSION['status'] = 'lost';
+    $remaining = 0;
+}
+
+if ($remaining <= 0) {
+    $_SESSION['status'] = 'lost';
+}
+
+$status = $_SESSION['status'];
+
+$feedback = "";
+
+
+if ($status === 'playing' && isset($_POST['answer'])) {
+
+    $input = strtolower(trim($_POST['answer']));
+
+    if ($input === $riddles[$current]['answer']) {
+
+        $_SESSION['current']++;
+        unset($_SESSION['hint']); // 🔥 reset hint
+
+        if ($_SESSION['current'] >= count($riddles)) {
+            $_SESSION['status'] = 'won';
+        }
+
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
-    }
 
-    // Submit knop (FIX!)
-    if (isset($_POST['submit'])) {
-        $input = strtolower(trim($_POST['answer']));
-
-        if ($input === $riddles[$current]['answer']) {
-            $_SESSION['current']++;
-            $_SESSION['hint'] = "";
-            $_SESSION['start_time'] = time();
-
-            if ($_SESSION['current'] >= count($riddles)) {
-                header("Location: " . $_SERVER['PHP_SELF'] . "?status=win");
-                exit;
-            } else {
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit;
-            }
-        } else {
-            header("Location: " . $_SERVER['PHP_SELF'] . "?status=lost");
-            exit;
-        }
+    } else {
+        $feedback = "✖ Wrong answer";
     }
 }
 
-// TIMER CHECK (NA submit!)
-if (time() - $_SESSION['start_time'] > $timeLimit) {
-    header("Location: " . $_SERVER['PHP_SELF'] . "?status=lost");
+
+if (isset($_POST['hint']) && $status === 'playing') {
+    $_SESSION['hint'] = $riddles[$current]['hint'];
+    header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
 
-$status = $_GET['status'] ?? "";
-$remaining = $timeLimit - (time() - $_SESSION['start_time']);
+
+if (isset($_POST['review_submit'])) {
+    $_SESSION['reviews'][] = [
+        "rating" => $_POST['rating'],
+        "difficulty" => $_POST['difficulty'],
+        "feedback" => $_POST['feedback']
+    ];
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Escape Room</title>
+<title>Room 3 - Escape Room</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: black;
-  color: white;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #050101 0%, #020000 60%, #070101 100%);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
 }
-.escape-room, .ending {
-  background: #1a0505;
-  padding: 25px;
-  border-radius: 10px;
+
+.escape-room {
   text-align: center;
 }
-input, button {
-  margin: 5px;
-  padding: 10px;
+
+.room-title {
+  font-size: 48px;
+  color: #ffe4d1;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #b11f1f;
 }
+
+.riddle-card {
+  background: #1a0505;
+  border: 1px solid #8f1010;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 10px 30px #000;
+}
+
+#riddleText {
+  color: #f0d2bf;
+  margin-bottom: 15px;
+}
+
 #timer {
-  color: red;
-  font-size: 20px;
+  color: #ffb3b3;
+  font-size: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  background: #000;
+  border: 1px solid #b11f1f;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+button {
+  background: #5c0b0b;
+  border: 1px solid #dcbcbc;
+  color: #fff;
+  padding: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #7a1a1a;
+}
+
+a {
+  display: inline-block;
+  background: #5c0b0b;
+  border: 1px solid #dcbcbc;
+  color: #fff;
+  padding: 8px 14px;
+  text-decoration: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+a:hover {
+  background: #7a1a1a;
+}
+h2, h3 {
+  color: #ffe4d1;
+}
+p {
+  color: #f0d2bf;
+}
+div{
+  color: #f0d2bf;
 }
 </style>
 
 <script>
-let timeLeft = <?php echo max(0, $remaining); ?>;
+let timeLeft = <?php echo $remaining; ?>;
 
-function updateTimer() {
+let timer = setInterval(() => {
+
     document.getElementById("timer").innerText = "Tijd: " + timeLeft + "s";
 
-    if (timeLeft <= 0) {
-        window.location.href = "?status=lost";
-    }
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+    window.location.href = window.location.pathname;
+}
 
     timeLeft--;
-}
-setInterval(updateTimer, 1000);
+
+}, 1000);
 </script>
 
 </head>
 <body>
 
-<?php if ($status === "win"): ?>
-    <div class="ending">
-        <h1>Gefeliciteerd!</h1>
-        <form method="POST"><button name="reset">Opnieuw</button></form>
-    </div>
+<div class="escape-room">
+  <h1 class="room-title">Room 3</h1>
 
-<?php elseif ($status === "lost"): ?>
-    <div class="ending">
-        <h1>Helaas, je hebt verloren!</h1>
-        <form method="POST"><button name="reset">Opnieuw</button></form>
-    </div>
+  <div class="riddle-card">
 
-<?php else: ?>
-    <div class="escape-room">
-        <div id="timer"></div>
+    <?php if ($status === 'playing'): ?>
 
-        <h2>Vraag <?php echo $current + 1; ?></h2>
-        <p><?php echo $riddles[$current]['question']; ?></p>
+        <h2 id="timer"></h2>
+
+        <p id="riddleText"><?php echo $riddles[$current]['question']; ?></p>
 
         <form method="POST">
-            <input type="text" name="answer" required>
-            <br>
-            <button type="submit" name="submit">Submit</button> <!-- FIX -->
+            <input type="text" name="answer" placeholder="Type your answer..." required>
+            <button type="submit">Submit</button>
             <button type="submit" name="hint">Hint</button>
-            <button type="submit" name="reset">Reset</button>
         </form>
 
-        <p>
-        <?php
-        if (!empty($hintText)) {
-            echo "💡 Hint: " . $hintText;
-        } else {
-            echo "Klik op 'Hint' voor hulp";
-        }
-        ?>
-        </p>
-    </div>
-<?php endif; ?>
+        <p><?php echo $feedback; ?></p>
+        <p><?php echo $hintText; ?></p>
+
+        <p>Riddle <?php echo $current + 1; ?> / <?php echo count($riddles); ?></p>
+
+    <?php elseif ($status === 'won'): ?>
+
+        <h2>🎉 Gewonnen!</h2>
+
+        <form method="POST">
+            <h3>Leave a review</h3>
+
+            <input type="number" name="rating" min="1" max="5" required placeholder="Rating (1-5)">
+            <input type="text" name="difficulty" required placeholder="Difficulty">
+            <input type="text" name="feedback" required placeholder="Feedback">
+
+            <button type="submit" name="review_submit">Submit review</button>
+        </form>
+
+        <?php foreach ($_SESSION['reviews'] as $r): ?>
+            <div style="border:1px solid #fff; margin:5px; padding:5px;">
+                ⭐ <?php echo $r['rating']; ?>/5 <br>
+                🎯 <?php echo $r['difficulty']; ?> <br>
+                💬 <?php echo $r['feedback']; ?>
+            </div>
+        <?php endforeach; ?>
+
+        <a href="?restart=1">Restart</a>
+
+    <?php else: ?>
+
+        <h2>💀 Game Over</h2>
+        <a href="?restart=1">Restart</a>
+
+    <?php endif; ?>
+
+  </div>
+</div>
 
 </body>
 </html>
